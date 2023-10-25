@@ -41,7 +41,7 @@
 .roombtnSpacing {
   margin-top: 8px;
   margin-bottom: 8px;
-  height: 326px;
+  /* height: 326px; */
   overflow-y: auto;
 }
 

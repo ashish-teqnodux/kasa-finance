@@ -120,8 +120,6 @@ const StepperForm = ({ data, id }) => {
   const [dropdownValue, setDropdownValue] = React.useState({});
   const [initialScopeData, setInitialScopeData] = React.useState([]);
 
-  console.log("initialScopeData", initialScopeData);
-  
   let groupedData = React.useMemo(() => {
     const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
       const { Floor } = item;
@@ -133,9 +131,7 @@ const StepperForm = ({ data, id }) => {
       }
       return acc;
     }, []);
-    console.log("groupedData", grouped);
     return grouped;
-    // setGroupedData(grouped);
   }, [data]);
 
   const floorClick = (roomObj) => {
@@ -174,8 +170,6 @@ const StepperForm = ({ data, id }) => {
       }
     }
     setInitialScopeData(newScopeData);
-
-    console.log("Hello", roomObj);
   };
 
   const EventSchema = yup.object().shape({
@@ -215,6 +209,11 @@ const StepperForm = ({ data, id }) => {
       "Other Project Timing Notes",
       data?.["Other Project Timing Notes"]
     );
+    setValue(
+      "Special instructions for getting into home Notes",
+      data?.["Special instructions for getting into home Notes"]
+    );
+    setValue("Installation Layout Notes", data?.["Installation Layout Notes"]);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -240,6 +239,16 @@ const StepperForm = ({ data, id }) => {
             };
           })
         : [],
+      "Stain Sample Chosen By The Customer": data?.[
+        "Stain Sample Chosen By The Customer"
+      ]
+        ? data?.["Stain Sample Chosen By The Customer"]?.map((val) => {
+            return {
+              title: val,
+              value: val,
+            };
+          })
+        : [],
     };
 
     let dropdownFields = {
@@ -248,6 +257,32 @@ const StepperForm = ({ data, id }) => {
       "Confirmed Timing Details": data?.["Confirmed Timing Details"] || "",
       "Customer Plan During Project":
         data?.["Customer Plan During Project"] || "",
+      "Confirmation for OPS to reach out to the customer":
+        data?.["Confirmation for OPS to reach out to the customer"] || "",
+      "Requires COI": data?.["Requires COI"] || "",
+      "Special instructions needed for getting Into the home?":
+        data?.["Special instructions needed for getting Into the home?"] || "",
+      "Confirmation that FlooredAtHome will be the only trade":
+        data?.["Confirmation that FlooredAtHome will be the only trade"] || "",
+      "Disposal Plan": data?.["Disposal Plan"] || "",
+      "Walls & Baseboard to be painted after the project":
+        data?.["Walls & Baseboard to be painted after the project"] || "",
+      "Delivery Required": data?.["Delivery Required"] || "",
+      "Material Confirmed": data?.["Material Confirmed"] || "",
+      "Scope Confirmed": data?.["Scope Confirmed"] || "",
+      "Are we matching any existing floor (Refi. orInst.)":
+        data?.["Are we matching any existing floor (Refi. orInst.)"] || "",
+      "Any project complications to be discussed with OPS":
+        data?.["Any project complications to be discussed with OPS"] || "",
+      "Installation Layout Style of New Floor":
+        data?.["Installation Layout Style of New Floor"] || "",
+      "Will the new floor be lower than the current floor":
+        data?.["Will the new floor be lower than the current floor"] || "",
+      "Is any leveling needed": data?.["Is any leveling needed"] || "",
+      "Is the customer staining the floor":
+        data?.["Is the customer staining the floor"] || "",
+      "Gloss level chosen by customer":
+        data?.["Gloss level chosen by customer"] || "",
     };
 
     setDate(dateFields);
@@ -296,11 +331,6 @@ const StepperForm = ({ data, id }) => {
     setActiveStep(step);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
-
   const onChangeDate = (localDate, key) => {
     if (key === "Deposit Taken Date") {
       // let dateFormetWithOffset =
@@ -345,6 +375,10 @@ const StepperForm = ({ data, id }) => {
         multiFieldValue?.["Critical Timing Requirements"]?.map(
           (val) => val.value
         ) || [],
+      "Stain Sample Chosen By The Customer":
+        multiFieldValue?.["Stain Sample Chosen By The Customer"]?.map(
+          (val) => val.value
+        ) || [],
     };
 
     let formattedDropdownvalues = {
@@ -370,6 +404,25 @@ const StepperForm = ({ data, id }) => {
       "Walls & Baseboard to be painted after the project":
         dropdownValue?.["Walls & Baseboard to be painted after the project"] ||
         "",
+      "Delivery Required": dropdownValue?.["Delivery Required"] || "",
+      "Material Confirmed": dropdownValue?.["Material Confirmed"] || "",
+      "Scope Confirmed": dropdownValue?.["Scope Confirmed"] || "",
+      "Are we matching any existing floor (Refi. orInst.)":
+        dropdownValue?.["Are we matching any existing floor (Refi. orInst.)"] ||
+        "",
+      "Any project complications to be discussed with OPS":
+        dropdownValue?.["Any project complications to be discussed with OPS"] ||
+        "",
+      "Installation Layout Style of New Floor":
+        dropdownValue?.["Installation Layout Style of New Floor"] || "",
+      "Will the new floor be lower than the current floor":
+        dropdownValue?.["Will the new floor be lower than the current floor"] ||
+        "",
+      "Is any leveling needed": dropdownValue?.["Is any leveling needed"] || "",
+      "Is the customer staining the floor":
+        dropdownValue?.["Is the customer staining the floor"] || "",
+      "Gloss level chosen by customer":
+        dropdownValue?.["Gloss level chosen by customer"] || "",
     };
 
     let noteValues = {
@@ -380,9 +433,10 @@ const StepperForm = ({ data, id }) => {
       "Other Project Timing Notes": data?.["Other Project Timing Notes"] || "",
       "Special instructions for getting into home Notes":
         data?.["Special instructions for getting into home Notes"] || "",
+      "Installation Layout Notes": data?.["Installation Layout Notes"] || "",
     };
 
-    // let id = "123";
+    let id = "123";
 
     let finalBody = {
       id,
@@ -390,6 +444,7 @@ const StepperForm = ({ data, id }) => {
       ...formatteddates,
       ...formattedMultivalues,
       ...formattedDropdownvalues,
+      Resulting_Scope: initialScopeData,
     };
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
@@ -464,10 +519,6 @@ const StepperForm = ({ data, id }) => {
                   <LogisticsForm
                     register={register}
                     errors={errors}
-                    onChange={onChangeDate}
-                    date={date}
-                    handleChangeMultiSelect={handleChangeMultiSelect}
-                    multiFieldValue={multiFieldValue}
                     handleChangeDropdown={handleChangeDropdown}
                     dropdownValue={dropdownValue}
                     getValues={getValues}
@@ -475,7 +526,18 @@ const StepperForm = ({ data, id }) => {
                   />
                 )}
                 {activeStep === 3 && (
-                  <ScopeForm floors={groupedData} floorClick={floorClick} />
+                  <ScopeForm
+                    floors={groupedData}
+                    floorClick={floorClick}
+                    register={register}
+                    errors={errors}
+                    handleChangeMultiSelect={handleChangeMultiSelect}
+                    handleChangeDropdown={handleChangeDropdown}
+                    dropdownValue={dropdownValue}
+                    getValues={getValues}
+                    data={data}
+                    multiFieldValue={multiFieldValue}
+                  />
                 )}
               </div>
               <Box

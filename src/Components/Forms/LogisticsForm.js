@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Input from "../UI/Input";
 import MuiDatePicker from "../UI/MuiDatePicker";
 import DropdownField from "../UI/DropdownField";
@@ -28,10 +28,6 @@ const multiOptions = [
 const LogisticsForm = ({
   register,
   errors,
-  date,
-  onChange,
-  handleChangeMultiSelect,
-  multiFieldValue,
   handleChangeDropdown,
   dropdownValue,
   getValues,
@@ -179,6 +175,44 @@ const LogisticsForm = ({
               )
             }
             options={["Yes", "No"]}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Box sx={{ textAlign: "start", textDecoration: "underline" }}>
+            <Typography variant="h5">Material</Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <DropdownField
+            id="Delivery Required"
+            name="Delivery Required"
+            label="Delivery Required"
+            register={register}
+            errors={errors}
+            value={dropdownValue?.["Delivery Required"]}
+            handleChangeDropdown={(e) =>
+              handleChangeDropdown(e, "Delivery Required")
+            }
+            options={["Delivery Required", "Delivery Not Required"]}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <DropdownField
+            id="Material Confirmed"
+            name="Material Confirmed"
+            label="Material Confirmed"
+            register={register}
+            errors={errors}
+            value={dropdownValue?.["Material Confirmed"]}
+            handleChangeDropdown={(e) =>
+              handleChangeDropdown(e, "Material Confirmed")
+            }
+            options={[
+              "No Material Required",
+              "No Material Required : Customer Providing",
+              "Material Required: Confirmed",
+              "Material Required: Not Yet Confirmed",
+            ]}
           />
         </Grid>
       </Grid>
