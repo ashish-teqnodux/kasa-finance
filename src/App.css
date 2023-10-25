@@ -6,6 +6,8 @@
   height: 48vh;
   overflow: auto;
   padding: 8px;
+  display: flex;
+  justify-content: center;
 }
 .App-logo {
   height: 40vmin;
@@ -21,7 +23,7 @@
   border-radius: 25px;
   padding-left: 4px;
   padding-right: 8px;
-  height: 44px;
+  height: 35px;
   border: 3px solid #d8d8d8;
   margin: 8px 0px;
   background-color: white;
@@ -31,10 +33,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  /* gap: 8px; */
   border-radius: 25px;
-  padding: 4px;
-  height: 44px;
+  /* padding: 4px; */
+  height: 33px;
   border: 3px solid #009dc2;
 }
 

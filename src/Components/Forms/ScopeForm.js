@@ -12,6 +12,7 @@ const ProjectGrid = styled(Grid)({
   display: "flex",
   justifyContent: "center",
   // height: "100%",
+  width: "40%",
 });
 
 const multiOptions = [
