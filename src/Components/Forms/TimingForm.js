@@ -34,6 +34,8 @@ const TimingForm = ({
   multiFieldValue,
   handleChangeDropdown,
   dropdownValue,
+  getValues,
+  data,
 }) => {
   return (
     <Box
@@ -126,6 +128,8 @@ const TimingForm = ({
             label="Other Project Timing Notes"
             register={register}
             errors={errors}
+            getValues={getValues}
+            value={data?.["Other Project Timing Notes"]}
           />
         </Grid>
       </Grid>

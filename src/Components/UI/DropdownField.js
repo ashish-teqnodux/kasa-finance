@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
@@ -7,6 +7,9 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   height: 48,
   background: "var(--white, #FFF)",
   position: "relative",
+  "& .MuiInputBase-root": {
+    padding: "10px 12px 10px 15px",
+  },
 }));
 
 const StyledSelect = styled(Select)(({ filledOut }) => ({
@@ -48,8 +51,8 @@ const DropdownField = ({
     <StyledFormControl variant="outlined" sx={{ width: "100%", height: 48 }}>
       <StyledInputLabel>{label}</StyledInputLabel>
       <StyledSelect
-        {...register(id)}
-        value={value}
+        // {...register(id)}
+        value={value || ""}
         onChange={handleChangeDropdown}
         style={{ borderColor: "red !important" }}
         label={label}

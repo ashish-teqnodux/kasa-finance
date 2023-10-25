@@ -10,13 +10,15 @@ import * as yup from "yup";
 import FinanceForm from "./Forms/FinanceForm";
 import { useReactHookForm } from "./hooks/useReactHookForm";
 import moment from "moment";
+import momentTz from "moment-timezone";
 import TimingForm from "./Forms/TimingForm";
 import { pushResultDatatoZoho } from "./services/finance.service";
 import dayjs from "dayjs";
+import LogisticsForm from "./Forms/LogisticsForm";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
 
-const StepperForm = ({ data }) => {
+const StepperForm = ({ data, id }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const [date, setDate] = React.useState({});
@@ -44,7 +46,9 @@ const StepperForm = ({ data }) => {
     //   }),
   });
 
-  const { register, errors, watch, getValues, setValue, handleSubmit } =
+  let timeZoneOffset = data?.["offset"];
+
+  const { register, errors, getValues, setValue, handleSubmit } =
     useReactHookForm({
       validationSchema: EventSchema,
       defaultValues: {},
@@ -59,29 +63,44 @@ const StepperForm = ({ data }) => {
       data?.["Other Project Timing Notes"]
     );
 
+    const parsedDate = momentTz.tz(
+      data?.["Deposit Taken Date"],
+      "America/New_York"
+    );
+
+    const formattedDate = parsedDate?.format("MM/DD/YYYY hh:mm A");
+
     let dateFields = {
-      "Deposit Taken Date": data?.["Deposit Taken Date"],
+      "Deposit Taken Date": data?.["Deposit Taken Date"] ? formattedDate : "",
       "Estimated or Agreed Start Date":
-        data?.["Estimated or Agreed Start Date"],
+        data?.["Estimated or Agreed Start Date"] || "",
       "Earliest Date Customer Can Start":
-        data?.["Earliest Date Customer Can Start"],
+        data?.["Earliest Date Customer Can Start"] || "",
     };
 
     let multiFields = {
-      "Critical Timing Requirements": data?.["Critical Timing Requirements"],
+      "Critical Timing Requirements": data?.["Critical Timing Requirements"]
+        ? data?.["Critical Timing Requirements"]?.map((val) => {
+            return {
+              title: val,
+              value: val,
+            };
+          })
+        : [],
     };
 
     let dropdownFields = {
-      "Method of Deposit": data?.["Method of Deposit"],
-      "Payment Terms": data?.["Payment Terms"],
-      "Confirmed Timing Details": data?.["Confirmed Timing Details"],
-      "Customer Plan During Project": data?.["Customer Plan During Project"],
+      "Method of Deposit": data?.["Method of Deposit"] || "",
+      "Payment Terms": data?.["Payment Terms"] || "",
+      "Confirmed Timing Details": data?.["Confirmed Timing Details"] || "",
+      "Customer Plan During Project":
+        data?.["Customer Plan During Project"] || "",
     };
 
     setDate(dateFields);
     setMultiFieldValue(multiFields);
     setDropdownValue(dropdownFields);
-  }, []);
+  }, [data]);
 
   const totalSteps = () => {
     return steps.length;
@@ -123,7 +142,13 @@ const StepperForm = ({ data }) => {
   };
 
   const onChangeDate = (localDate, key) => {
-    setDate({ ...date, [key]: dayjs(localDate).format("YYYY-MM-DD") });
+    if (key === "Deposit Taken Date") {
+      // let dateFormetWithOffset =
+      //   dayjs(localDate).format("YYYY-MM-DDTHH:mm:ss") + `-${data?.["offset"]}`;
+      setDate({ ...date, [key]: localDate });
+    } else {
+      setDate({ ...date, [key]: dayjs(localDate).format("YYYY-MM-DD") });
+    }
   };
 
   const handleChangeMultiSelect = (event, newValue, key) => {
@@ -135,26 +160,76 @@ const StepperForm = ({ data }) => {
   };
 
   const onSubmit = async (data) => {
-    let formatteddates = {};
-    let formattedMultivalues = {};
+    let dateFormatWithOffset =
+      dayjs(date?.["Deposit Taken Date"]).format("YYYY-MM-DDTHH:mm:ss") +
+      `-${timeZoneOffset}`;
 
-    for (const localKey in date) {
-      formatteddates[localKey] = moment(date[localKey]).format("YYYY-MM-DD");
-    }
+    let formatteddates = {
+      "Deposit Taken Date": date?.["Deposit Taken Date"]
+        ? dateFormatWithOffset
+        : "",
+      "Estimated or Agreed Start Date": date?.["Estimated or Agreed Start Date"]
+        ? moment(date?.["Estimated or Agreed Start Date"]).format("YYYY-MM-DD")
+        : "",
+      "Earliest Date Customer Can Start": date?.[
+        "Earliest Date Customer Can Start"
+      ]
+        ? moment(date?.["Earliest Date Customer Can Start"]).format(
+            "YYYY-MM-DD"
+          )
+        : "",
+    };
 
-    for (const localKey in multiFieldValue) {
-      formattedMultivalues[localKey] = multiFieldValue?.[localKey]?.map(
-        (val) => val.value
-      );
-    }
+    let formattedMultivalues = {
+      "Critical Timing Requirements":
+        multiFieldValue?.["Critical Timing Requirements"]?.map(
+          (val) => val.value
+        ) || [],
+    };
+
+    let formattedDropdownvalues = {
+      "Method of Deposit": dropdownValue?.["Method of Deposit"] || "",
+      "Payment Terms": dropdownValue?.["Payment Terms"] || "",
+      "Confirmed Timing Details":
+        dropdownValue?.["Confirmed Timing Details"] || "",
+      "Customer Plan During Project":
+        dropdownValue?.["Customer Plan During Project"] || "",
+      "Confirmation for OPS to reach out to the customer":
+        dropdownValue?.["Confirmation for OPS to reach out to the customer"] ||
+        "",
+      "Requires COI": dropdownValue?.["Requires COI"] || "",
+      "Special instructions needed for getting Into the home?":
+        dropdownValue?.[
+          "Special instructions needed for getting Into the home?"
+        ] || "",
+      "Confirmation that FlooredAtHome will be the only trade":
+        dropdownValue?.[
+          "Confirmation that FlooredAtHome will be the only trade"
+        ] || "",
+      "Disposal Plan": dropdownValue?.["Disposal Plan"] || "",
+      "Walls & Baseboard to be painted after the project":
+        dropdownValue?.["Walls & Baseboard to be painted after the project"] ||
+        "",
+    };
+
+    let noteValues = {
+      Amount: data?.Amount ? Number(data?.Amount) : 0,
+      "Deposit Taken": data?.["Deposit Taken"]
+        ? Number(data["Deposit Taken"])
+        : 0,
+      "Other Project Timing Notes": data?.["Other Project Timing Notes"] || "",
+      "Special instructions for getting into home Notes":
+        data?.["Special instructions for getting into home Notes"] || "",
+    };
 
     let id = "123";
 
     let finalBody = {
       id,
-      ...data,
+      ...noteValues,
       ...formatteddates,
       ...formattedMultivalues,
+      ...formattedDropdownvalues,
     };
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
@@ -174,7 +249,7 @@ const StepperForm = ({ data }) => {
       <Box sx={{ width: "100%", p: 10 }}>
         <Stepper nonLinear activeStep={activeStep}>
           {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
+            <Step key={index} completed={completed[index]}>
               <StepButton
                 type="button"
                 color="inherit"
@@ -212,6 +287,8 @@ const StepperForm = ({ data }) => {
                     handleChangeDropdown={handleChangeDropdown}
                     date={date}
                     dropdownValue={dropdownValue}
+                    data={data}
+                    getValues={getValues}
                   />
                 )}
                 {activeStep === 1 && (
@@ -224,6 +301,22 @@ const StepperForm = ({ data }) => {
                     multiFieldValue={multiFieldValue}
                     handleChangeDropdown={handleChangeDropdown}
                     dropdownValue={dropdownValue}
+                    getValues={getValues}
+                    data={data}
+                  />
+                )}
+                {activeStep === 2 && (
+                  <LogisticsForm
+                    register={register}
+                    errors={errors}
+                    onChange={onChangeDate}
+                    date={date}
+                    handleChangeMultiSelect={handleChangeMultiSelect}
+                    multiFieldValue={multiFieldValue}
+                    handleChangeDropdown={handleChangeDropdown}
+                    dropdownValue={dropdownValue}
+                    getValues={getValues}
+                    data={data}
                   />
                 )}
                 <Box

@@ -4,11 +4,6 @@ import Input from "../UI/Input";
 import MuiDatePicker from "../UI/MuiDatePicker";
 import DropdownField from "../UI/DropdownField";
 
-const multiOptions = [
-  { title: "Cash or Check", value: "Cash or Check" },
-  { title: "Wire Transfer", value: "Wire Transfer" },
-];
-
 const FinanceForm = ({
   register,
   errors,
@@ -16,6 +11,8 @@ const FinanceForm = ({
   handleChangeDropdown,
   date,
   dropdownValue,
+  data,
+  getValues,
 }) => {
   return (
     <Box
@@ -34,6 +31,8 @@ const FinanceForm = ({
             label="Amount"
             register={register}
             errors={errors}
+            value={data?.["Amount"]}
+            getValues={getValues}
           />
         </Grid>
         <Grid item xs={12}>
@@ -44,6 +43,8 @@ const FinanceForm = ({
             label="Deposit Taken ($)"
             register={register}
             errors={errors}
+            value={data?.["Deposit Taken"]}
+            getValues={getValues}
           />
         </Grid>
         <Grid item xs={12}>

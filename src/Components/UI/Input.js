@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const StyledInput = styled(TextField)(() => ({
   "&.MuiTextField-root": {
@@ -45,7 +45,26 @@ const Input = (props) => {
     multiline,
     maxRows = 4,
     minRows = 4,
+    getValues,
   } = props;
+
+  const [focus, setFocus] = useState(false);
+
+  useEffect(() => {
+    if (!!value) {
+      setFocus(true);
+    }
+  }, [value, register]);
+
+  const handleFocus = () => {
+    setFocus(true);
+  };
+
+  const handleBlur = async (e) => {
+    if (getValues(id) == 0 || getValues(id) == "") {
+      setFocus(false);
+    }
+  };
 
   return (
     <StyledInput
@@ -55,9 +74,15 @@ const Input = (props) => {
       name={name}
       {...register(id)}
       type={type}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       autoComplete="off"
       disabled={disabled}
-      value={value}
+      defaultValue={value}
+      InputLabelProps={{ shrink: Boolean(getValues(id)) || focus }}
+      inputProps={{
+        step: "any",
+      }}
       multiline={multiline}
       maxRows={maxRows}
       minRows={minRows}
