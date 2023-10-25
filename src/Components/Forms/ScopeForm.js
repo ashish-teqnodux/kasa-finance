@@ -9,7 +9,7 @@ const ProjectGrid = styled(Grid)({
   display: "flex",
   justifyContent: "center",
   // height: "100%",
-  width: "50%",
+  width: "40%",
 });
 
 const ScopeForm = ({ floors, floorClick }) => {
