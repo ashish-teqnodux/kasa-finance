@@ -12,6 +12,7 @@ import { useReactHookForm } from "./hooks/useReactHookForm";
 import moment from "moment";
 import TimingForm from "./Forms/TimingForm";
 import { pushResultDatatoZoho } from "./services/finance.service";
+import dayjs from "dayjs";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
 
@@ -122,7 +123,7 @@ const StepperForm = ({ data }) => {
   };
 
   const onChangeDate = (localDate, key) => {
-    setDate({ ...date, [key]: localDate });
+    setDate({ ...date, [key]: dayjs(localDate).format("YYYY-MM-DD") });
   };
 
   const handleChangeMultiSelect = (event, newValue, key) => {
