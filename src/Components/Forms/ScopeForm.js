@@ -12,7 +12,7 @@ const ProjectGrid = styled(Grid)({
   display: "flex",
   justifyContent: "center",
   // height: "100%",
-  width: "40%",
+  width: "100%",
 });
 
 const multiOptions = [
@@ -190,7 +190,13 @@ const ScopeForm = ({
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <ProjectGrid container spacing={1}>
         {floors?.length > 0 &&
           floors.map((floor, index) => {
@@ -207,8 +213,8 @@ const ScopeForm = ({
       <Box
         sx={{
           pb: "30px",
-          width: "30%",
-          // margin: "auto",
+          width: "60%",
+          margin: "auto",
         }}
       >
         <Grid container spacing={2} sx={{ mt: "5px" }}>
@@ -402,7 +408,7 @@ const ScopeForm = ({
           )}
         </Grid>
       </Box>
-    </>
+    </Box>
   );
 };
 
