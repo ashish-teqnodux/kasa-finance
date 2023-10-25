@@ -6,6 +6,8 @@
   height: 48vh;
   overflow: auto;
   padding: 8px;
+  display: flex;
+  justify-content: center;
 }
 .App-logo {
   height: 40vmin;
@@ -41,7 +43,6 @@
 .roombtnSpacing {
   margin-top: 8px;
   margin-bottom: 8px;
-  height: 326px;
   overflow-y: auto;
 }
 

@@ -43,7 +43,9 @@ const ScopeButton = ({ roomObj, floorClick }) => {
         type="button"
         onClick={() => floorClick(roomObj)}
       >
-        <div>{roomObj?.Room}</div>
+        <div>
+          {roomObj?.Room} - {roomObj.SF || 0} SF
+        </div>
       </button>
     </>
   );

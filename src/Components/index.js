@@ -8,6 +8,7 @@ const StepperIndexPage = () => {
   const [searchParams] = useSearchParams();
 
   const queryValue = searchParams.get("id");
+  console.log("queryValue", queryValue);
 
   useEffect(() => {
     const fetchData = async () => {

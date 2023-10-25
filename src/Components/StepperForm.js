@@ -35,13 +35,13 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage:
-        "linear-gradient( 95deg, #1e2e5a 0%,#263055 50%,#2c3250 100%)",
+        "linear-gradient( 95deg, #1e2e5a 0%,#263055 50%,#444c74 100%)",
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage:
-        "linear-gradient( 95deg,#1e2e5a 0%,#263055 50%,#2c3250 100%)",
+        "linear-gradient( 95deg,#1e2e5a 0%,#263055 50%,#444c74 100%)",
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -64,12 +64,12 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   alignItems: "center",
   ...(ownerState.active && {
     backgroundImage:
-      "linear-gradient( 136deg, #686d8e 0%, #444c74 50%, #1e2e5a 100%)",
+      "linear-gradient( 136deg, #8c8fa9 0%, #444c74 50%, #1e2e5a 100%)",
     boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   }),
   ...(ownerState.completed && {
     backgroundImage:
-      "linear-gradient( 136deg, #686d8e 0%, #444c74 50%, #1e2e5a 100%)",
+      "linear-gradient( 136deg, #8c8fa9 0%, #444c74 50%, #1e2e5a 100%)",
   }),
 }));
 
@@ -124,18 +124,20 @@ const StepperForm = ({ data, id }) => {
 
   let groupedData = React.useMemo(() => {
     const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
-      const { Floor } = item;
+      const { Floor, SF } = item;
       const existingGroup = acc.find((group) => group.floor === Floor);
+
       if (existingGroup) {
         existingGroup.rooms.push(item);
+        existingGroup.totalSF += SF; // Add SF to existing group
       } else {
-        acc.push({ floor: Floor, rooms: [item] });
+        acc.push({ floor: Floor, rooms: [item], totalSF: SF });
       }
+
       return acc;
     }, []);
     console.log("groupedData", grouped);
     return grouped;
-    // setGroupedData(grouped);
   }, [data]);
 
   const floorClick = (roomObj) => {

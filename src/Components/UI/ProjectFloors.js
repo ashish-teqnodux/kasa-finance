@@ -13,7 +13,9 @@ const ProjectFloors = ({ floor, index, setIsDragEnabled, floorClick }) => {
       style={{ position: "relative" }}
     >
       <div className="floorBtn">
-        <div>{floor.floor}</div>
+        <div>
+          {floor?.floor}-{floor?.totalSF}
+        </div>
         <div
           className={`absolute -top-1 -right-1`}
           //   onClick={() => handleRemoveClick(floor.floor, floor?.id)}
