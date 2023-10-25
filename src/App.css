@@ -2,9 +2,65 @@
   text-align: center;
 }
 
+.formContainer {
+  height: 48vh;
+  overflow: auto;
+  padding: 8px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.scopeBtn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 25px;
+  padding-left: 4px;
+  padding-right: 8px;
+  height: 44px;
+  border: 3px solid #d8d8d8;
+  margin: 8px 0px;
+  background-color: white;
+  cursor: pointer;
+}
+.floorBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 25px;
+  padding: 4px;
+  height: 44px;
+  border: 3px solid #009dc2;
+}
+
+.roombtnSpacing {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 326px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  width: 5px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

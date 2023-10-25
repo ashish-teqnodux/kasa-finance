@@ -1,11 +1,11 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Card, Divider } from "@mui/material";
+import { Card, Divider, StepLabel } from "@mui/material";
 import * as yup from "yup";
 import FinanceForm from "./Forms/FinanceForm";
 import { useReactHookForm } from "./hooks/useReactHookForm";
@@ -15,8 +15,102 @@ import TimingForm from "./Forms/TimingForm";
 import { pushResultDatatoZoho } from "./services/finance.service";
 import dayjs from "dayjs";
 import LogisticsForm from "./Forms/LogisticsForm";
+import styled from "@emotion/styled";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ChairIcon from "@mui/icons-material/Chair";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import ScopeForm from "./Forms/ScopeForm";
+import StepConnector, {
+  stepConnectorClasses,
+} from "@mui/material/StepConnector";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
+
+const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 22,
+  },
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    height: 3,
+    border: 0,
+    backgroundColor: "#eaeaf0",
+    borderRadius: 1,
+  },
+}));
+
+const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  backgroundColor: "#ccc",
+  zIndex: 1,
+  color: "#fff",
+  width: 50,
+  height: 50,
+  display: "flex",
+  borderRadius: "50%",
+  justifyContent: "center",
+  alignItems: "center",
+  ...(ownerState.active && {
+    backgroundImage:
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+  }),
+  ...(ownerState.completed && {
+    backgroundImage:
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+  }),
+}));
+
+function ColorlibStepIcon(props) {
+  const { active, completed, className } = props;
+
+  const icons = {
+    1: <AttachMoneyIcon />,
+    2: <AccessTimeIcon />,
+    3: <LocalShippingIcon />,
+    4: <PlaylistAddCheckIcon />,
+    5: <ChairIcon />,
+  };
+
+  return (
+    <ColorlibStepIconRoot
+      ownerState={{ completed, active }}
+      className={className}
+    >
+      {icons[String(props.icon)]}
+    </ColorlibStepIconRoot>
+  );
+}
+
+ColorlibStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+  /**
+   * The label displayed in the step icon.
+   */
+  icon: PropTypes.node,
+};
 
 const StepperForm = ({ data, id }) => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -24,6 +118,65 @@ const StepperForm = ({ data, id }) => {
   const [date, setDate] = React.useState({});
   const [multiFieldValue, setMultiFieldValue] = React.useState({});
   const [dropdownValue, setDropdownValue] = React.useState({});
+  const [initialScopeData, setInitialScopeData] = React.useState([]);
+
+  console.log("initialScopeData", initialScopeData);
+  
+  let groupedData = React.useMemo(() => {
+    const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
+      const { Floor } = item;
+      const existingGroup = acc.find((group) => group.floor === Floor);
+      if (existingGroup) {
+        existingGroup.rooms.push(item);
+      } else {
+        acc.push({ floor: Floor, rooms: [item] });
+      }
+      return acc;
+    }, []);
+    console.log("groupedData", grouped);
+    return grouped;
+    // setGroupedData(grouped);
+  }, [data]);
+
+  const floorClick = (roomObj) => {
+    let newScopeData = [...initialScopeData];
+
+    let findIndex = newScopeData.findIndex(
+      (item) => item.Room === roomObj.Room
+    );
+    if (findIndex !== -1) {
+      let {
+        Is_Install,
+        Is_Refinishing,
+        Is_Out_Of_Scope_For_Refinish,
+        Is_Out_Of_Scope_For_Install,
+      } = roomObj;
+
+      if (Is_Install && Is_Refinishing) {
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = true;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = true;
+        newScopeData[findIndex].Is_Install = false;
+        newScopeData[findIndex].Is_Refinishing = false;
+      } else if (Is_Install && !Is_Refinishing) {
+        newScopeData[findIndex].Is_Refinishing = true;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = false;
+      } else if (!Is_Install && Is_Refinishing) {
+        newScopeData[findIndex].Is_Install = true;
+        newScopeData[findIndex].Is_Refinishing = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = false;
+      } else if (Is_Out_Of_Scope_For_Refinish && Is_Out_Of_Scope_For_Install) {
+        newScopeData[findIndex].Is_Refinishing = true;
+        newScopeData[findIndex].Is_Install = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = false;
+      }
+    }
+    setInitialScopeData(newScopeData);
+
+    console.log("Hello", roomObj);
+  };
 
   const EventSchema = yup.object().shape({
     // amount: yup
@@ -100,6 +253,7 @@ const StepperForm = ({ data, id }) => {
     setDate(dateFields);
     setMultiFieldValue(multiFields);
     setDropdownValue(dropdownFields);
+    setInitialScopeData(data?.Resulting_Scope);
   }, [data]);
 
   const totalSteps = () => {
@@ -126,10 +280,16 @@ const StepperForm = ({ data, id }) => {
           steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
+    const newCompleted = completed;
+    newCompleted[activeStep] = true;
+    setCompleted(newCompleted);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    const newCompleted = completed;
+    newCompleted[activeStep] = false;
+    setCompleted(newCompleted);
   };
 
   const handleStep = (step) => () => {
@@ -247,15 +407,22 @@ const StepperForm = ({ data, id }) => {
       }}
     >
       <Box sx={{ width: "100%", p: 10 }}>
-        <Stepper nonLinear activeStep={activeStep}>
+        <Stepper
+          alternativeLabel
+          nonLinear
+          activeStep={activeStep}
+          connector={<ColorlibConnector />}
+        >
           {steps.map((label, index) => (
-            <Step key={index} completed={completed[index]}>
+            <Step key={label} completed={completed[index]}>
               <StepButton
                 type="button"
                 color="inherit"
                 onClick={handleStep(index)}
               >
-                {label}
+                <StepLabel StepIconComponent={ColorlibStepIcon}>
+                  {label}
+                </StepLabel>
               </StepButton>
             </Step>
           ))}
@@ -264,21 +431,9 @@ const StepperForm = ({ data, id }) => {
           <Divider sx={{ my: "40px" }} />
         </div>
         <div>
-          {allStepsCompleted() ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button type="button" onClick={handleReset}>
-                  Reset
-                </Button>
-              </Box>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <form onSubmit={handleSubmit(onSubmit)}>
+          <React.Fragment>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="formContainer">
                 {activeStep === 0 && (
                   <FinanceForm
                     register={register}
@@ -319,31 +474,50 @@ const StepperForm = ({ data, id }) => {
                     data={data}
                   />
                 )}
-                <Box
+                {activeStep === 3 && (
+                  <ScopeForm floors={groupedData} floorClick={floorClick} />
+                )}
+              </div>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  pt: 2,
+                }}
+              >
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Previous
+                </Button>
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleNext}
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "row",
-                    pt: 2,
+                    display: activeStep === 4 ? "none" : "block",
                   }}
                 >
-                  <Button
-                    type="button"
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                  <Button type="button" onClick={handleNext} sx={{ mr: 1 }}>
-                    Next
-                  </Button>
-                  <Button type="submit">Finish</Button>
-                </Box>
-              </form>
-            </React.Fragment>
-          )}
+                  Next
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    display: activeStep === 4 ? "block" : "none",
+                  }}
+                >
+                  Save
+                </Button>
+              </Box>
+            </form>
+          </React.Fragment>
         </div>
       </Box>
     </Card>
