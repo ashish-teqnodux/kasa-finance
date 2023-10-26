@@ -4,7 +4,10 @@
 
 .formContainer {
   height: 48vh;
-  overflow: auto;
+  width: 100%;
+  margin: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 8px;
   display: flex;
   justify-content: center;
@@ -23,7 +26,7 @@
   border-radius: 25px;
   padding-left: 4px;
   padding-right: 8px;
-  height: 35px;
+  height: 40px;
   border: 3px solid #d8d8d8;
   margin: 8px 0px;
   background-color: white;

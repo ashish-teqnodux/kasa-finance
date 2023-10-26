@@ -26,6 +26,7 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import MuiSnackbar from "./UI/MuiSnackbar";
+import FurnitureForm from "./Forms/FurnitureForm";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
 
@@ -120,6 +121,7 @@ const StepperForm = ({ data, id }) => {
   const [multiFieldValue, setMultiFieldValue] = React.useState({});
   const [dropdownValue, setDropdownValue] = React.useState({});
   const [initialScopeData, setInitialScopeData] = React.useState([]);
+  const [initialStaircaseData, setInitialStaircaseData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [type, setType] = React.useState("");
@@ -167,13 +169,13 @@ const StepperForm = ({ data, id }) => {
       } else if (!Is_Install && Is_Refinishing) {
         newScopeData[findIndex].Is_Install = true;
         newScopeData[findIndex].Is_Refinishing = false;
-        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = true;
         newScopeData[findIndex].Is_Out_Of_Scope_For_Install = false;
       } else if (Is_Out_Of_Scope_For_Refinish && Is_Out_Of_Scope_For_Install) {
         newScopeData[findIndex].Is_Refinishing = true;
         newScopeData[findIndex].Is_Install = false;
         newScopeData[findIndex].Is_Out_Of_Scope_For_Refinish = false;
-        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = false;
+        newScopeData[findIndex].Is_Out_Of_Scope_For_Install = true;
       }
     }
     setInitialScopeData(newScopeData);
@@ -256,6 +258,22 @@ const StepperForm = ({ data, id }) => {
             };
           })
         : [],
+      Appliances: data?.Appliances
+        ? data?.Appliances?.map((val) => {
+            return {
+              title: val,
+              value: val,
+            };
+          })
+        : [],
+      "Special Items": data?.["Special Items"]
+        ? data?.["Special Items"]?.map((val) => {
+            return {
+              title: val,
+              value: val,
+            };
+          })
+        : [],
     };
 
     let dropdownFields = {
@@ -290,12 +308,15 @@ const StepperForm = ({ data, id }) => {
         data?.["Is the customer staining the floor"] || "",
       "Gloss level chosen by customer":
         data?.["Gloss level chosen by customer"] || "",
+      "Is Appliances In Scope": data?.["Is Appliances In Scope"] || "",
+      "Is Special Items In Scope": data?.["Is Special Items In Scope"] || "",
     };
 
     setDate(dateFields);
     setMultiFieldValue(multiFields);
     setDropdownValue(dropdownFields);
     setInitialScopeData(data?.Resulting_Scope);
+    setInitialStaircaseData(data?.Staircases_Scope);
   }, [data]);
 
   const totalSteps = () => {
@@ -356,6 +377,43 @@ const StepperForm = ({ data, id }) => {
     setDropdownValue({ ...dropdownValue, [key]: event.target.value });
   };
 
+  const handleChangeStaricaseDropdown = (event, name, key) => {
+    let tmpStaircase = [...initialStaircaseData];
+    tmpStaircase = tmpStaircase?.map((SC) => {
+      if (SC?.Staircase_Name === name) {
+        if (key === "Staircase Scope") {
+          return {
+            ...SC,
+            Staircase_Scope: event.target.value,
+          };
+        } else {
+          return {
+            ...SC,
+            Is_there_a_staircase_rip_out: event.target.value,
+          };
+        }
+      }
+      return { ...SC };
+    });
+    setInitialStaircaseData(tmpStaircase);
+  };
+
+  const staircaseClick = (staricase) => {
+    let tmpStaircase = [...initialStaircaseData];
+    tmpStaircase = tmpStaircase?.map((SC) => {
+      if (SC?.Staircase_Name === staricase?.Staircase_Name) {
+        return {
+          ...SC,
+          Staircase_Scope: staricase?.Staircase_Scope
+            ? null
+            : "Refinishing Only",
+        };
+      }
+      return { ...SC };
+    });
+    setInitialStaircaseData(tmpStaircase);
+  };
+
   const onSubmit = async (data) => {
     let dateFormatWithOffset =
       dayjs(date?.["Deposit Taken Date"]).format("YYYY-MM-DDTHH:mm:ss") +
@@ -386,6 +444,9 @@ const StepperForm = ({ data, id }) => {
         multiFieldValue?.["Stain Sample Chosen By The Customer"]?.map(
           (val) => val.value
         ) || [],
+      Appliances: multiFieldValue?.Appliances?.map((val) => val.value) || [],
+      "Special Items":
+        multiFieldValue?.["Special Items"]?.map((val) => val.value) || [],
     };
 
     let formattedDropdownvalues = {
@@ -430,6 +491,9 @@ const StepperForm = ({ data, id }) => {
         dropdownValue?.["Is the customer staining the floor"] || "",
       "Gloss level chosen by customer":
         dropdownValue?.["Gloss level chosen by customer"] || "",
+      "Is Appliances In Scope": dropdownValue?.["Is Appliances In Scope"] || "",
+      "Is Special Items In Scope":
+        dropdownValue?.["Is Special Items In Scope"] || "",
     };
 
     let noteValues = {
@@ -443,7 +507,7 @@ const StepperForm = ({ data, id }) => {
       "Installation Layout Notes": data?.["Installation Layout Notes"] || "",
     };
 
-    // let id = "123";
+    let id = "123";
 
     let finalBody = {
       id,
@@ -452,6 +516,7 @@ const StepperForm = ({ data, id }) => {
       ...formattedMultivalues,
       ...formattedDropdownvalues,
       Resulting_Scope: initialScopeData,
+      Staircases_Scope: initialStaircaseData,
     };
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
@@ -546,14 +611,29 @@ const StepperForm = ({ data, id }) => {
                 {activeStep === 3 && (
                   <ScopeForm
                     floors={groupedData}
-                    floorClick={floorClick}
                     register={register}
+                    floorClick={floorClick}
                     errors={errors}
                     handleChangeMultiSelect={handleChangeMultiSelect}
                     handleChangeDropdown={handleChangeDropdown}
                     dropdownValue={dropdownValue}
                     getValues={getValues}
                     data={data}
+                    multiFieldValue={multiFieldValue}
+                    initialStaircaseData={initialStaircaseData}
+                    staircaseClick={staircaseClick}
+                    handleChangeStaricaseDropdown={
+                      handleChangeStaricaseDropdown
+                    }
+                  />
+                )}
+                {activeStep === 4 && (
+                  <FurnitureForm
+                    register={register}
+                    errors={errors}
+                    handleChangeDropdown={handleChangeDropdown}
+                    dropdownValue={dropdownValue}
+                    handleChangeMultiSelect={handleChangeMultiSelect}
                     multiFieldValue={multiFieldValue}
                   />
                 )}

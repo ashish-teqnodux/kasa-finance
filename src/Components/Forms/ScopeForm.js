@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import ScopeButton from "../UI/ScopeButton";
-import { Box, Grid } from "@mui/material";
-import styled from "@emotion/styled";
+import { Box, Grid, Typography, styled } from "@mui/material";
+// import styled from "@emotion/styled";
 import ProjectFloors from "../UI/ProjectFloors";
 import DropdownField from "../UI/DropdownField";
 import Input from "../UI/Input";
 import MuiAutoComplete from "../UI/MuiAutoComplete";
+import StaircaseButton from "../UI/StaricaseButton";
 
-const ProjectGrid = styled(Grid)({
+const ProjectGrid = styled(Grid)(({ theme }) => ({
   padding: "10px 0 10px 24px",
   display: "flex",
   justifyContent: "center",
-  // height: "100%",
-  width: "100%",
-});
+  [theme.breakpoints.down("sm")]: {
+    width: "100%", // Adjust for small screens (e.g., phones)
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "80%", // Adjust for large screens (e.g., desktops)
+  },
+}));
 
 const multiOptions = [
   { title: "Aged Barrel", value: "Aged Barrel" },
@@ -165,11 +170,14 @@ const ScopeForm = ({
   register,
   errors,
   handleChangeDropdown,
+  handleChangeStaricaseDropdown,
   dropdownValue,
   getValues,
   data,
   handleChangeMultiSelect,
   multiFieldValue,
+  initialStaircaseData,
+  staircaseClick,
 }) => {
   let isInstall = false;
   let isRefinishing = false;
@@ -195,6 +203,7 @@ const ScopeForm = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        width: "50%",
       }}
     >
       <ProjectGrid container spacing={1}>
@@ -210,6 +219,27 @@ const ScopeForm = ({
             );
           })}
       </ProjectGrid>
+      <div>
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", textDecoration: "underline" }}
+        >
+          Staircase In Scope
+        </Typography>
+      </div>
+      <Box sx={{ width: "35%" }}>
+        {initialStaircaseData?.length > 0 &&
+          initialStaircaseData.map((staircase, index) => {
+            return (
+              <div style={{ marginTop: "4px" }}>
+                <StaircaseButton
+                  staircase={staircase}
+                  staircaseClick={staircaseClick}
+                />
+              </div>
+            );
+          })}
+      </Box>
       <Box
         sx={{
           pb: "30px",
@@ -406,6 +436,66 @@ const ScopeForm = ({
               />
             </Grid>
           )}
+          {initialStaircaseData?.map((sc) => {
+            if (sc?.Staircase_Scope) {
+              return (
+                <>
+                  <Grid item xs={12}>
+                    <DropdownField
+                      id="Staircase Scope"
+                      name="Staircase Scope"
+                      label="Staircase Scope"
+                      register={register}
+                      errors={errors}
+                      value={sc?.Staircase_Scope}
+                      handleChangeDropdown={(e) =>
+                        handleChangeStaricaseDropdown(
+                          e,
+                          sc?.Staircase_Name,
+                          "Staircase Scope"
+                        )
+                      }
+                      options={[
+                        "Refinishing Only",
+                        "Unfinished Install with Refinishing",
+                        "Prefinished Install",
+                        "Unfinished NuStair with Refinishing",
+                        "Prefinished NuStair",
+                        "Buff and Recoat",
+                        "Other",
+                      ]}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <DropdownField
+                      id="Is there a staircase rip out?"
+                      name="Is there a staircase rip out?"
+                      label="Is there a staircase rip out?"
+                      register={register}
+                      errors={errors}
+                      value={sc?.Is_there_a_staircase_rip_out}
+                      handleChangeDropdown={(e) =>
+                        handleChangeStaricaseDropdown(
+                          e,
+                          sc?.Staircase_Name,
+                          "Is there a staircase rip out?"
+                        )
+                      }
+                      options={[
+                        "No Staircase Rip Out Required",
+                        "Rip Out Required: Customer Removing",
+                        "Wall to wall carpet to be removed by FlooredAtHome",
+                        "Wall to wall carpet with stringers to be removed by FlooredAtHome",
+                        "Runner to be removed by FlooredAtHome",
+                      ]}
+                    />
+                  </Grid>
+                </>
+              );
+            } else {
+              return <></>;
+            }
+          })}
         </Grid>
       </Box>
     </Box>

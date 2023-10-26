@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Paper, TextField } from "@mui/material";
 
 const StyledInput = styled(TextField)(() => ({
   "&.MuiTextField-root": {
     "& .MuiInputBase-input": {
       padding: "14px",
       fontSize: "13px",
+    },
+    "& .MuiChip-label": {
+      fontSize: "12px",
     },
     "& .MuiOutlinedInput-notchedOutline": {
       borderRadius: "10px",
@@ -53,11 +56,28 @@ const MuiAutoComplete = ({
       onChange={handleChangeMulti}
       getOptionLabel={(option) => option.title}
       value={values}
+      PaperComponent={CustomPaper}
       renderInput={(params) => (
-        <StyledInput {...params} variant="outlined" label={label} />
+        <StyledInput
+          {...params}
+          variant="outlined"
+          label={label}
+          sx={{ fontSize: "10px" }}
+        />
       )}
     />
   );
 };
 
 export default MuiAutoComplete;
+
+function CustomPaper(props) {
+  return (
+    <Paper
+      {...props}
+      style={{
+        fontSize: "13px", // Adjust the max height as needed
+      }}
+    />
+  );
+}
