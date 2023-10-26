@@ -25,6 +25,7 @@ import ScopeForm from "./Forms/ScopeForm";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
+import MuiSnackbar from "./UI/MuiSnackbar";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
 
@@ -119,6 +120,9 @@ const StepperForm = ({ data, id }) => {
   const [multiFieldValue, setMultiFieldValue] = React.useState({});
   const [dropdownValue, setDropdownValue] = React.useState({});
   const [initialScopeData, setInitialScopeData] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+  const [type, setType] = React.useState("");
 
   let groupedData = React.useMemo(() => {
     const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
@@ -439,7 +443,7 @@ const StepperForm = ({ data, id }) => {
       "Installation Layout Notes": data?.["Installation Layout Notes"] || "",
     };
 
-    // let id = "123";
+    let id = "123";
 
     let finalBody = {
       id,
@@ -452,7 +456,12 @@ const StepperForm = ({ data, id }) => {
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
 
-    console.log(pushData, "pushData-");
+    if (pushData?.data) {
+      let message = pushData?.data?.entity?.code;
+      setOpen(true);
+      setMessage(message);
+      setType(message === "success" ? "success" : "error");
+    }
   };
 
   return (
@@ -464,6 +473,12 @@ const StepperForm = ({ data, id }) => {
         height: "100vh",
       }}
     >
+      <MuiSnackbar
+        open={open}
+        message={message || ""}
+        type={type || ""}
+        onClose={() => setOpen(false)}
+      />
       <Box sx={{ width: "100%", p: 10 }}>
         <Stepper
           alternativeLabel
