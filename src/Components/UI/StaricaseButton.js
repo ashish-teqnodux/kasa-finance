@@ -20,7 +20,7 @@ const StaircaseButton = ({ staircase, staircaseClick }) => {
         type="button"
         onClick={() => staircaseClick(staircase)}
       >
-        {staircase?.Staircase_Name} - from {staircase?.From_Floor} to{" "}
+        {staircase?.Staircase_Name} - From {staircase?.From_Floor} To{" "}
         {staircase?.To_Floor}
       </button>
     </>

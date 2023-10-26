@@ -179,7 +179,16 @@ const LogisticsForm = ({
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ textAlign: "start", textDecoration: "underline" }}>
-            <Typography variant="h5">Material</Typography>
+            <Typography
+              sx={{
+                textDecoration: "underline",
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: "#1E2E5A",
+              }}
+            >
+              Material
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={12}>

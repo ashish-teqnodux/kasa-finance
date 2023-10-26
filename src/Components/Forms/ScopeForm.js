@@ -221,13 +221,18 @@ const ScopeForm = ({
       </ProjectGrid>
       <div>
         <Typography
-          variant="h5"
-          sx={{ textAlign: "center", textDecoration: "underline" }}
+          sx={{
+            textAlign: "center",
+            textDecoration: "underline",
+            fontSize: "18px",
+            fontWeight: "bold",
+            color: "#1E2E5A",
+          }}
         >
           Staircase In Scope
         </Typography>
       </div>
-      <Box sx={{ width: "35%" }}>
+      <Box sx={{ width: "40%" }}>
         {initialStaircaseData?.length > 0 &&
           initialStaircaseData.map((staircase, index) => {
             return (
@@ -440,6 +445,18 @@ const ScopeForm = ({
             if (sc?.Staircase_Scope) {
               return (
                 <>
+                  <Grid item xs={12} sx={{ textAlign: "start" }}>
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        color: "#1E2E5A",
+                        fontWeight: "bold",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {sc?.Staircase_Name}
+                    </Typography>
+                  </Grid>
                   <Grid item xs={12}>
                     <DropdownField
                       id="Staircase Scope"
