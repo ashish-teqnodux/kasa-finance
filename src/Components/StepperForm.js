@@ -407,6 +407,9 @@ const StepperForm = ({ data, id }) => {
           Staircase_Scope: staricase?.Staircase_Scope
             ? null
             : "Refinishing Only",
+          Is_there_a_staircase_rip_out: staricase?.Staircase_Scope
+            ? ""
+            : staricase?.Is_there_a_staircase_rip_out,
         };
       }
       return { ...SC };
@@ -415,6 +418,24 @@ const StepperForm = ({ data, id }) => {
   };
 
   const onSubmit = async (data) => {
+    let isInstall = false;
+    let isRefinishing = false;
+
+    if (initialScopeData?.length > 0) {
+      for (const floor of initialScopeData) {
+        if (floor?.rooms?.length > 0) {
+          for (const room of floor.rooms) {
+            if (room?.Is_Install) {
+              isInstall = true;
+            }
+            if (room?.Is_Refinishing) {
+              isRefinishing = true;
+            }
+          }
+        }
+      }
+    }
+
     let dateFormatWithOffset =
       dayjs(date?.["Deposit Taken Date"]).format("YYYY-MM-DDTHH:mm:ss") +
       `-${timeZoneOffset}`;
@@ -440,13 +461,19 @@ const StepperForm = ({ data, id }) => {
         multiFieldValue?.["Critical Timing Requirements"]?.map(
           (val) => val.value
         ) || [],
-      "Stain Sample Chosen By The Customer":
-        multiFieldValue?.["Stain Sample Chosen By The Customer"]?.map(
-          (val) => val.value
-        ) || [],
-      Appliances: multiFieldValue?.Appliances?.map((val) => val.value) || [],
+      "Stain Sample Chosen By The Customer": isRefinishing
+        ? multiFieldValue?.["Stain Sample Chosen By The Customer"]?.map(
+            (val) => val.value
+          )
+        : [],
+      Appliances:
+        dropdownValue?.["Is Appliances In Scope"] === "Yes"
+          ? multiFieldValue?.Appliances?.map((val) => val.value)
+          : [],
       "Special Items":
-        multiFieldValue?.["Special Items"]?.map((val) => val.value) || [],
+        dropdownValue?.["Is Special Items In Scope"] === "Yes"
+          ? multiFieldValue?.["Special Items"]?.map((val) => val.value)
+          : [],
     };
 
     let formattedDropdownvalues = {
@@ -481,16 +508,21 @@ const StepperForm = ({ data, id }) => {
       "Any project complications to be discussed with OPS":
         dropdownValue?.["Any project complications to be discussed with OPS"] ||
         "",
-      "Installation Layout Style of New Floor":
-        dropdownValue?.["Installation Layout Style of New Floor"] || "",
-      "Will the new floor be lower than the current floor":
-        dropdownValue?.["Will the new floor be lower than the current floor"] ||
-        "",
-      "Is any leveling needed": dropdownValue?.["Is any leveling needed"] || "",
-      "Is the customer staining the floor":
-        dropdownValue?.["Is the customer staining the floor"] || "",
-      "Gloss level chosen by customer":
-        dropdownValue?.["Gloss level chosen by customer"] || "",
+      "Installation Layout Style of New Floor": isInstall
+        ? dropdownValue?.["Installation Layout Style of New Floor"]
+        : "",
+      "Will the new floor be lower than the current floor": isInstall
+        ? dropdownValue?.["Will the new floor be lower than the current floor"]
+        : "",
+      "Is any leveling needed": isInstall
+        ? dropdownValue?.["Is any leveling needed"]
+        : "",
+      "Is the customer staining the floor": isRefinishing
+        ? dropdownValue?.["Is the customer staining the floor"]
+        : "",
+      "Gloss level chosen by customer": isRefinishing
+        ? dropdownValue?.["Gloss level chosen by customer"]
+        : "",
       "Is Appliances In Scope": dropdownValue?.["Is Appliances In Scope"] || "",
       "Is Special Items In Scope":
         dropdownValue?.["Is Special Items In Scope"] || "",
@@ -502,12 +534,19 @@ const StepperForm = ({ data, id }) => {
         ? Number(data["Deposit Taken"])
         : 0,
       "Other Project Timing Notes": data?.["Other Project Timing Notes"] || "",
+
       "Special instructions for getting into home Notes":
-        data?.["Special instructions for getting into home Notes"] || "",
-      "Installation Layout Notes": data?.["Installation Layout Notes"] || "",
+        dropdownValue?.[
+          "Special instructions needed for getting Into the home?"
+        ] === "Yes"
+          ? data?.["Special instructions for getting into home Notes"]
+          : "",
+      "Installation Layout Notes": isInstall
+        ? data?.["Installation Layout Notes"]
+        : "",
     };
 
-    // let id = "123";
+    let id = "123";
 
     let finalBody = {
       id,
