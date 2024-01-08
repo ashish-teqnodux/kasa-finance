@@ -15,3 +15,7 @@ export const GET_RESULTING_DATA_BY_ID = (id) =>
 
 export const ADD_RESULT_DATA_TO_ZOHO = (id) =>
   UrlParamsReplace("/save-data-to-zoho/:id", { id });
+
+export const GET_USER_BY_ID = (id) => {
+  return `http://fvbackend.kasawalkthrough.com/api/auth/get-user/${id}`;
+};
