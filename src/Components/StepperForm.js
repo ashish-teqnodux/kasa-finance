@@ -223,6 +223,14 @@ const StepperForm = ({ data, id }) => {
       data?.["Special instructions for getting into home Notes"]
     );
     setValue("Installation Layout Notes", data?.["Installation Layout Notes"]);
+    setValue(
+      "Other Reason Customer Is Doing Project",
+      data?.["Other Reason Customer Is Doing Project"]
+    );
+    setValue(
+      "Most Important thing to the customer",
+      data?.["Most Important thing to the customer"]
+    );
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -299,6 +307,8 @@ const StepperForm = ({ data, id }) => {
         data?.["Are we matching any existing floor (Refi. orInst.)"] || "",
       "Any project complications to be discussed with OPS":
         data?.["Any project complications to be discussed with OPS"] || "",
+      "Why Customer is Doing the Project":
+        data?.["Why Customer is Doing the Project"] || "",
       "Installation Layout Style of New Floor":
         data?.["Installation Layout Style of New Floor"] || "",
       "Will the new floor be lower than the current floor":
@@ -508,6 +518,8 @@ const StepperForm = ({ data, id }) => {
       "Any project complications to be discussed with OPS":
         dropdownValue?.["Any project complications to be discussed with OPS"] ||
         "",
+      "Why Customer is Doing the Project":
+        dropdownValue?.["Why Customer is Doing the Project"] || "",
       "Installation Layout Style of New Floor": isInstall
         ? dropdownValue?.["Installation Layout Style of New Floor"]
         : "",
@@ -544,9 +556,15 @@ const StepperForm = ({ data, id }) => {
       "Installation Layout Notes": isInstall
         ? data?.["Installation Layout Notes"]
         : "",
+      "Other Reason Customer Is Doing Project":
+        dropdownValue?.["Why Customer is Doing the Project"] === "Other"
+          ? data?.["Other Reason Customer Is Doing Project"]
+          : "",
+      "Most Important thing to the customer":
+        data?.["Most Important thing to the customer"] || "",
     };
 
-    let id = "123";
+    // let id = "123";
 
     let finalBody = {
       id,

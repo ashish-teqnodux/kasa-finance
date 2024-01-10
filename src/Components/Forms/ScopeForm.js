@@ -309,6 +309,53 @@ const ScopeForm = ({
               options={["Yes", "No"]}
             />
           </Grid>
+          <Grid item xs={12}>
+            <DropdownField
+              id="Why Customer is Doing the Project"
+              name="Why Customer is Doing the Project"
+              label="Why Customer is Doing the Project"
+              register={register}
+              errors={errors}
+              value={dropdownValue?.["Why Customer is Doing the Project"]}
+              handleChangeDropdown={(e) =>
+                handleChangeDropdown(e, "Why Customer is Doing the Project")
+              }
+              options={[
+                "Moving into a new house",
+                "Looking for an exact color",
+                "Improve Squeaks",
+                "Improve Leveling",
+                "Damage to prior floor",
+                "Other",
+              ]}
+            />
+          </Grid>
+          {dropdownValue?.["Why Customer is Doing the Project"] === "Other" && (
+            <Grid item xs={12}>
+              <Input
+                id="Other Reason Customer Is Doing Project"
+                name="Other Reason Customer Is Doing Project"
+                type="text"
+                label="Other Reason Customer Is Doing Project"
+                register={register}
+                errors={errors}
+                getValues={getValues}
+                value={data?.["Other Reason Customer Is Doing Project"]}
+              />
+            </Grid>
+          )}
+          <Grid item xs={12}>
+            <Input
+              id="Most Important thing to the customer"
+              name="Most Important thing to the customer"
+              type="text"
+              label="Most Important thing to the customer"
+              register={register}
+              errors={errors}
+              getValues={getValues}
+              value={data?.["Most Important thing to the customer"]}
+            />
+          </Grid>
           {isInstall && (
             <Grid item xs={12}>
               <DropdownField
