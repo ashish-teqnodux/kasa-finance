@@ -27,6 +27,7 @@ import StepConnector, {
 } from "@mui/material/StepConnector";
 import MuiSnackbar from "./UI/MuiSnackbar";
 import FurnitureForm from "./Forms/FurnitureForm";
+import MuiCustomModal from "./UI/MuiCustomModal";
 
 const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
 
@@ -125,6 +126,13 @@ const StepperForm = ({ data, id }) => {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [type, setType] = React.useState("");
+  const [emailModal, setEmailModal] = React.useState(false);
+  const [formData, setFormData] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const staticStage = React.useMemo(() => {
+    return data?.Stage;
+  }, [data]);
 
   let groupedData = React.useMemo(() => {
     const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
@@ -231,6 +239,10 @@ const StepperForm = ({ data, id }) => {
       "Most Important thing to the customer",
       data?.["Most Important thing to the customer"]
     );
+    setValue(
+      "Complications to be discussed",
+      data?.["Complications to be discussed"]
+    );
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -245,6 +257,8 @@ const StepperForm = ({ data, id }) => {
         data?.["Estimated or Agreed Start Date"] || "",
       "Earliest Date Customer Can Start":
         data?.["Earliest Date Customer Can Start"] || "",
+      "When does the floor need to be used":
+        data?.["When does the floor need to be used"] || "",
     };
 
     let multiFields = {
@@ -320,6 +334,7 @@ const StepperForm = ({ data, id }) => {
         data?.["Gloss level chosen by customer"] || "",
       "Is Appliances In Scope": data?.["Is Appliances In Scope"] || "",
       "Is Special Items In Scope": data?.["Is Special Items In Scope"] || "",
+      "Timing Requirements": data?.["Timing Requirements"] || "",
     };
 
     setDate(dateFields);
@@ -427,7 +442,13 @@ const StepperForm = ({ data, id }) => {
     setInitialStaircaseData(tmpStaircase);
   };
 
-  const onSubmit = async (data) => {
+  const openEmailModal = async (data) => {
+    setEmailModal(true);
+    setFormData(data);
+  };
+
+  const onSubmit = async (emailVal, data) => {
+    setIsLoading({ [emailVal]: true });
     let isInstall = false;
     let isRefinishing = false;
 
@@ -461,6 +482,13 @@ const StepperForm = ({ data, id }) => {
         "Earliest Date Customer Can Start"
       ]
         ? moment(date?.["Earliest Date Customer Can Start"]).format(
+            "YYYY-MM-DD"
+          )
+        : "",
+      "When does the floor need to be used": date?.[
+        "When does the floor need to be used"
+      ]
+        ? moment(date?.["When does the floor need to be used"]).format(
             "YYYY-MM-DD"
           )
         : "",
@@ -538,6 +566,7 @@ const StepperForm = ({ data, id }) => {
       "Is Appliances In Scope": dropdownValue?.["Is Appliances In Scope"] || "",
       "Is Special Items In Scope":
         dropdownValue?.["Is Special Items In Scope"] || "",
+      "Timing Requirements": dropdownValue?.["Timing Requirements"] || "",
     };
 
     let noteValues = {
@@ -562,9 +591,15 @@ const StepperForm = ({ data, id }) => {
           : "",
       "Most Important thing to the customer":
         data?.["Most Important thing to the customer"] || "",
+      "Complications to be discussed":
+        dropdownValue?.[
+          "Any project complications to be discussed with OPS"
+        ] === "Yes"
+          ? data?.["Complications to be discussed"]
+          : "",
+      "Would like to get an Email ?": emailVal || "No",
+      Stage: staticStage || "",
     };
-
-    // let id = "123";
 
     let finalBody = {
       id,
@@ -584,6 +619,8 @@ const StepperForm = ({ data, id }) => {
       setMessage(message);
       setType(message === "success" ? "success" : "error");
     }
+    setIsLoading({ [emailVal]: false });
+    setEmailModal(false);
   };
 
   return (
@@ -627,7 +664,7 @@ const StepperForm = ({ data, id }) => {
         </div>
         <div>
           <React.Fragment>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(openEmailModal)}>
               <div className="formContainer">
                 {activeStep === 0 && (
                   <FinanceForm
@@ -737,6 +774,14 @@ const StepperForm = ({ data, id }) => {
           </React.Fragment>
         </div>
       </Box>
+      <MuiCustomModal
+        open={emailModal}
+        handleClose={() => {
+          setEmailModal(false);
+        }}
+        onSubmit={(emailVal) => onSubmit(emailVal, formData)}
+        loading={isLoading}
+      />
     </Card>
   );
 };

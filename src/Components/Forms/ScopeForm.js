@@ -309,6 +309,22 @@ const ScopeForm = ({
               options={["Yes", "No"]}
             />
           </Grid>
+          {dropdownValue?.[
+            "Any project complications to be discussed with OPS"
+          ] === "Yes" && (
+            <Grid item xs={12}>
+              <Input
+                id="Complications to be discussed"
+                name="Complications to be discussed"
+                type="text"
+                label="Complications to be discussed"
+                register={register}
+                errors={errors}
+                getValues={getValues}
+                value={data?.["Complications to be discussed"]}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <DropdownField
               id="Why Customer is Doing the Project"

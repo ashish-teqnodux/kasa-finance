@@ -76,6 +76,37 @@ const TimingForm = ({
           />
         </Grid>
         <Grid item xs={12}>
+          <DropdownField
+            id="Timing Requirements"
+            name="Timing Requirements"
+            label="Timing Requirements"
+            register={register}
+            errors={errors}
+            value={dropdownValue?.["Timing Requirements"]}
+            handleChangeDropdown={(e) =>
+              handleChangeDropdown(e, "Timing Requirements")
+            }
+            options={[
+              "Firm Dates Critical to Customer",
+              "Target dates with some flexibility",
+              "High Flexibilty with Project Timing",
+              "Unknown",
+            ]}
+          />
+        </Grid>
+        {dropdownValue?.["Timing Requirements"] ===
+          "Firm Dates Critical to Customer" && (
+          <Grid item xs={12}>
+            <MuiDatePicker
+              onChange={(date) =>
+                onChange(date, "When does the floor need to be used")
+              }
+              value={date["When does the floor need to be used"]}
+              label="When does the floor need to be used"
+            />
+          </Grid>
+        )}
+        <Grid item xs={12}>
           <MuiAutoComplete
             id="Critical Timing Requirements"
             name="Critical Timing Requirements"
