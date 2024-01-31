@@ -246,8 +246,8 @@ const StepperForm = ({ data, id }) => {
       data?.["Other Reason Customer Is Doing Project"]
     );
     setValue(
-      "Most Important thing to the customer",
-      data?.["Most Important thing to the customer"]
+      "Most Important thing to customer about project",
+      data?.["Most Important thing to customer about project"]
     );
     setValue(
       "Complications to be discussed",
@@ -610,8 +610,8 @@ const StepperForm = ({ data, id }) => {
         dropdownValue?.["Why Customer is Doing the Project"] === "Other"
           ? data?.["Other Reason Customer Is Doing Project"]
           : "",
-      "Most Important thing to the customer":
-        data?.["Most Important thing to the customer"] || "",
+      "Most Important thing to customer about project":
+        data?.["Most Important thing to customer about project"] || "",
       "Complications to be discussed":
         dropdownValue?.[
           "Any project complications to be discussed with OPS"

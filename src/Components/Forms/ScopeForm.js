@@ -362,14 +362,14 @@ const ScopeForm = ({
           )}
           <Grid item xs={12}>
             <Input
-              id="Most Important thing to the customer"
-              name="Most Important thing to the customer"
+              id="Most Important thing to customer about project"
+              name="Most Important thing to customer about project"
               type="text"
-              label="Most Important thing to the customer"
+              label="Most Important thing to customer about project"
               register={register}
               errors={errors}
               getValues={getValues}
-              value={data?.["Most Important thing to the customer"]}
+              value={data?.["Most Important thing to customer about project"]}
             />
           </Grid>
           {isInstall && (
