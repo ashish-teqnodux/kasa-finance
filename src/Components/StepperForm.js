@@ -18,6 +18,7 @@ import LogisticsForm from "./Forms/LogisticsForm";
 import styled from "@emotion/styled";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ChairIcon from "@mui/icons-material/Chair";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
@@ -28,8 +29,16 @@ import StepConnector, {
 import MuiSnackbar from "./UI/MuiSnackbar";
 import FurnitureForm from "./Forms/FurnitureForm";
 import MuiCustomModal from "./UI/MuiCustomModal";
+import CustomerInfoForm from "./Forms/CustomerInfoForm";
 
-const steps = ["Finance", "Timing", "Logistics", "Scope", "Furniture"];
+const steps = [
+  "Customer Info.",
+  "Finance",
+  "Timing",
+  "Logistics",
+  "Scope",
+  "Furniture",
+];
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -80,11 +89,12 @@ function ColorlibStepIcon(props) {
   const { active, completed, className } = props;
 
   const icons = {
-    1: <AttachMoneyIcon />,
-    2: <AccessTimeIcon />,
-    3: <LocalShippingIcon />,
-    4: <PlaylistAddCheckIcon />,
-    5: <ChairIcon />,
+    1: <PersonIcon />,
+    2: <AttachMoneyIcon />,
+    3: <AccessTimeIcon />,
+    4: <LocalShippingIcon />,
+    5: <PlaylistAddCheckIcon />,
+    6: <ChairIcon />,
   };
 
   return (
@@ -243,6 +253,13 @@ const StepperForm = ({ data, id }) => {
       "Complications to be discussed",
       data?.["Complications to be discussed"]
     );
+    setValue("Spouse name", data?.["Spouse name"]);
+    setValue("Spouse_s_phone_number", data?.["Spouse's phone number"]);
+    setValue(
+      "Customer Plan For The Project Notes",
+      data?.["Customer Plan For The Project Notes"]
+    );
+    setValue("Floor level", data?.["Floor level"]);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -335,6 +352,8 @@ const StepperForm = ({ data, id }) => {
       "Is Appliances In Scope": data?.["Is Appliances In Scope"] || "",
       "Is Special Items In Scope": data?.["Is Special Items In Scope"] || "",
       "Timing Requirements": data?.["Timing Requirements"] || "",
+      "Property type": data?.["Property type"] || "",
+      "Doorman building?": data?.["Doorman building?"] || "",
     };
 
     setDate(dateFields);
@@ -567,6 +586,8 @@ const StepperForm = ({ data, id }) => {
       "Is Special Items In Scope":
         dropdownValue?.["Is Special Items In Scope"] || "",
       "Timing Requirements": dropdownValue?.["Timing Requirements"] || "",
+      "Property type": dropdownValue?.["Property type"] || "",
+      "Doorman building?": dropdownValue?.["Doorman building?"] || "",
     };
 
     let noteValues = {
@@ -599,6 +620,11 @@ const StepperForm = ({ data, id }) => {
           : "",
       "Would like to get an Email ?": emailVal || "No",
       Stage: staticStage || "",
+      "Spouse name": data?.["Spouse name"] || "",
+      "Spouse's phone number": data?.Spouse_s_phone_number || "",
+      "Customer Plan For The Project Notes":
+        data?.["Customer Plan For The Project Notes"] || "",
+      "Floor level": data?.["Floor level"] || "",
     };
 
     let finalBody = {
@@ -667,6 +693,20 @@ const StepperForm = ({ data, id }) => {
             <form onSubmit={handleSubmit(openEmailModal)}>
               <div className="formContainer">
                 {activeStep === 0 && (
+                  <CustomerInfoForm
+                    register={register}
+                    errors={errors}
+                    onChange={onChangeDate}
+                    date={date}
+                    handleChangeMultiSelect={handleChangeMultiSelect}
+                    multiFieldValue={multiFieldValue}
+                    handleChangeDropdown={handleChangeDropdown}
+                    dropdownValue={dropdownValue}
+                    getValues={getValues}
+                    data={data}
+                  />
+                )}
+                {activeStep === 1 && (
                   <FinanceForm
                     register={register}
                     errors={errors}
@@ -678,7 +718,7 @@ const StepperForm = ({ data, id }) => {
                     getValues={getValues}
                   />
                 )}
-                {activeStep === 1 && (
+                {activeStep === 2 && (
                   <TimingForm
                     register={register}
                     errors={errors}
@@ -692,7 +732,7 @@ const StepperForm = ({ data, id }) => {
                     data={data}
                   />
                 )}
-                {activeStep === 2 && (
+                {activeStep === 3 && (
                   <LogisticsForm
                     register={register}
                     errors={errors}
@@ -702,7 +742,7 @@ const StepperForm = ({ data, id }) => {
                     data={data}
                   />
                 )}
-                {activeStep === 3 && (
+                {activeStep === 4 && (
                   <ScopeForm
                     floors={groupedData}
                     register={register}
@@ -721,7 +761,7 @@ const StepperForm = ({ data, id }) => {
                     }
                   />
                 )}
-                {activeStep === 4 && (
+                {activeStep === 5 && (
                   <FurnitureForm
                     register={register}
                     errors={errors}
@@ -755,7 +795,7 @@ const StepperForm = ({ data, id }) => {
                   variant="contained"
                   onClick={handleNext}
                   sx={{
-                    display: activeStep === 4 ? "none" : "block",
+                    display: activeStep === 5 ? "none" : "block",
                   }}
                 >
                   Next
@@ -764,7 +804,7 @@ const StepperForm = ({ data, id }) => {
                   type="submit"
                   variant="contained"
                   sx={{
-                    display: activeStep === 4 ? "block" : "none",
+                    display: activeStep === 5 ? "block" : "none",
                   }}
                 >
                   Save

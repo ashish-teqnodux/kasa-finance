@@ -142,6 +142,18 @@ const TimingForm = ({
           />
         </Grid>
         <Grid item xs={12}>
+          <Input
+            id="Customer Plan For The Project Notes"
+            name="Customer Plan For The Project Notes"
+            type="text"
+            label="Customer Plan For The Project Notes"
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            value={data?.["Customer Plan For The Project Notes"]}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <MuiDatePicker
             onChange={(date) =>
               onChange(date, "Earliest Date Customer Can Start")
