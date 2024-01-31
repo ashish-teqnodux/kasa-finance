@@ -260,6 +260,7 @@ const StepperForm = ({ data, id }) => {
       data?.["Customer Plan For The Project Notes"]
     );
     setValue("Floor level", data?.["Floor level"]);
+    setValue("Other stain/finish notes", data?.["Other stain/finish notes"]);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -354,6 +355,30 @@ const StepperForm = ({ data, id }) => {
       "Timing Requirements": data?.["Timing Requirements"] || "",
       "Property type": data?.["Property type"] || "",
       "Doorman building?": data?.["Doorman building?"] || "",
+      "Metal doors to be scribed around?":
+        data?.["Metal doors to be scribed around?"] === true
+          ? "Yes"
+          : data?.["Metal doors to be scribed around?"] === false
+          ? "No"
+          : "",
+      "Doors jams expected to be cut?":
+        data?.["Doors jams expected to be cut?"] === true
+          ? "Yes"
+          : data?.["Doors jams expected to be cut?"] === false
+          ? "No"
+          : "",
+      "Doors expected to be cut?":
+        data?.["Doors expected to be cut?"] === true
+          ? "Yes"
+          : data?.["Doors expected to be cut?"] === false
+          ? "No"
+          : "",
+      "3 coats of finish in 1 day allowed?":
+        data?.["3 coats of finish in 1 day allowed?"] === true
+          ? "Yes"
+          : data?.["3 coats of finish in 1 day allowed?"] === false
+          ? "No"
+          : "",
     };
 
     setDate(dateFields);
@@ -588,6 +613,30 @@ const StepperForm = ({ data, id }) => {
       "Timing Requirements": dropdownValue?.["Timing Requirements"] || "",
       "Property type": dropdownValue?.["Property type"] || "",
       "Doorman building?": dropdownValue?.["Doorman building?"] || "",
+      "Metal doors to be scribed around?":
+        dropdownValue?.["Metal doors to be scribed around?"] === "Yes"
+          ? true
+          : dropdownValue?.["Metal doors to be scribed around?"] === "No"
+          ? false
+          : "",
+      "Doors jams expected to be cut?":
+        dropdownValue?.["Doors jams expected to be cut?"] === "Yes"
+          ? true
+          : dropdownValue?.["Doors jams expected to be cut?"] === "No"
+          ? false
+          : "",
+      "Doors expected to be cut?":
+        dropdownValue?.["Doors expected to be cut?"] === "Yes"
+          ? true
+          : dropdownValue?.["Doors expected to be cut?"] === "No"
+          ? false
+          : "",
+      "3 coats of finish in 1 day allowed?":
+        dropdownValue?.["3 coats of finish in 1 day allowed?"] === "Yes"
+          ? true
+          : dropdownValue?.["3 coats of finish in 1 day allowed?"] === "No"
+          ? false
+          : "",
     };
 
     let noteValues = {
@@ -625,6 +674,7 @@ const StepperForm = ({ data, id }) => {
       "Customer Plan For The Project Notes":
         data?.["Customer Plan For The Project Notes"] || "",
       "Floor level": data?.["Floor level"] || "",
+      "Other stain/finish notes": data?.["Other stain/finish notes"] || "",
     };
 
     let finalBody = {
