@@ -582,7 +582,10 @@ const StepperForm = ({ data, id }) => {
         dropdownValue?.["Walls & Baseboard to be painted after the project"] ||
         "",
       "Delivery Required": dropdownValue?.["Delivery Required"] || "",
-      "Material Confirmed": dropdownValue?.["Material Confirmed"] || "",
+      "Material Confirmed":
+        dropdownValue?.["Delivery Required"] === "Delivery Required"
+          ? dropdownValue?.["Material Confirmed"] || ""
+          : "",
       "Scope Confirmed": dropdownValue?.["Scope Confirmed"] || "",
       "Are we matching any existing floor (Refi. orInst.)":
         dropdownValue?.["Are we matching any existing floor (Refi. orInst.)"] ||
@@ -612,7 +615,11 @@ const StepperForm = ({ data, id }) => {
         dropdownValue?.["Is Special Items In Scope"] || "",
       "Timing Requirements": dropdownValue?.["Timing Requirements"] || "",
       "Property type": dropdownValue?.["Property type"] || "",
-      "Doorman building?": dropdownValue?.["Doorman building?"] || "",
+      "Doorman building?":
+        dropdownValue?.["Property type"] === "Apartment" ||
+        dropdownValue?.["Property type"] === "Condo"
+          ? dropdownValue?.["Doorman building?"] || ""
+          : "",
       "Metal doors to be scribed around?":
         dropdownValue?.["Metal doors to be scribed around?"] === "Yes"
           ? true
@@ -673,7 +680,11 @@ const StepperForm = ({ data, id }) => {
       "Spouse's phone number": data?.Spouse_s_phone_number || "",
       "Customer Plan For The Project Notes":
         data?.["Customer Plan For The Project Notes"] || "",
-      "Floor level": data?.["Floor level"] || "",
+      "Floor level":
+        dropdownValue?.["Property type"] === "Apartment" ||
+        dropdownValue?.["Property type"] === "Condo"
+          ? data?.["Floor level"] || ""
+          : "",
       "Other stain/finish notes": data?.["Other stain/finish notes"] || "",
     };
 
@@ -686,7 +697,7 @@ const StepperForm = ({ data, id }) => {
       Resulting_Scope: initialScopeData,
       Staircases_Scope: initialStaircaseData,
     };
-
+    
     const pushData = await pushResultDatatoZoho(finalBody, id);
 
     if (pushData?.data) {
@@ -714,7 +725,7 @@ const StepperForm = ({ data, id }) => {
         type={type || ""}
         onClose={() => setOpen(false)}
       />
-      <Box sx={{ width: "100%", p: 10 }}>
+      <Box sx={{ width: "100%", pt: 3, px: 8 }}>
         <Stepper
           alternativeLabel
           nonLinear
@@ -736,7 +747,7 @@ const StepperForm = ({ data, id }) => {
           ))}
         </Stepper>
         <div>
-          <Divider sx={{ my: "40px" }} />
+          <Divider sx={{ my: "30px" }} />
         </div>
         <div>
           <React.Fragment>
@@ -830,7 +841,7 @@ const StepperForm = ({ data, id }) => {
                   pt: 2,
                 }}
               >
-                <Button
+                {/* <Button
                   type="button"
                   variant="contained"
                   color="inherit"
@@ -849,7 +860,7 @@ const StepperForm = ({ data, id }) => {
                   }}
                 >
                   Next
-                </Button>
+                </Button> */}
                 <Button
                   type="submit"
                   variant="contained"

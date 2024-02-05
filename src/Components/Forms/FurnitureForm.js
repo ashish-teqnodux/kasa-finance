@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import DropdownField from "../UI/DropdownField";
 import MuiAutoComplete from "../UI/MuiAutoComplete";
+import { Constants } from "../../utils/Constants";
 
 const appliancesOptions = [
   { title: "Refrigerator", value: "Refrigerator" },
@@ -63,7 +64,7 @@ const FurnitureForm = ({
     <Box
       sx={{
         pb: "30px",
-        width: "30%",
+        width: Constants.MIDDLE_FORM_WIDTH,
         // margin: "auto",
       }}
     >

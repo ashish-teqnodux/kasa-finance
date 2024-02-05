@@ -13,7 +13,7 @@ const ProjectFloors = ({ floor, index, setIsDragEnabled, floorClick }) => {
       style={{ position: "relative" }}
     >
       <div className="floorBtn">
-        <div>
+        <div style={{ fontSize: "10px" }}>
           {floor?.floor}-{floor?.totalSF}
         </div>
         <div

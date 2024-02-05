@@ -3,7 +3,7 @@
 }
 
 .formContainer {
-  height: 48vh;
+  min-height: 60vh;
   width: 100%;
   margin: auto;
   overflow-y: auto;
@@ -27,7 +27,7 @@
   padding-left: 4px;
   padding-right: 8px;
   height: 40px;
-  border: 3px solid #d8d8d8;
+  border: 0 solid #d8d8d8;
   margin: 8px 0px;
   background-color: white;
   cursor: pointer;
@@ -37,10 +37,10 @@
   justify-content: center;
   align-items: center;
   /* gap: 8px; */
-  border-radius: 25px;
+  border-radius: 12px;
   /* padding: 4px; */
   height: 33px;
-  border: 3px solid #009dc2;
+  border: 1px solid #009dc2;
 }
 
 .roombtnSpacing {
@@ -51,7 +51,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {

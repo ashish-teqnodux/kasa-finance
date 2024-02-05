@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Tooltip, Typography } from "@mui/material";
 
 const ScopeButton = ({ roomObj, floorClick }) => {
   let {
@@ -34,18 +35,28 @@ const ScopeButton = ({ roomObj, floorClick }) => {
                 backgroundColor: `${bgColor}`,
                 zIndex: "1 !important",
                 color: "white",
+                borderRadius: "12px",
               }
             : {
                 backgroundColor: "#CF1200",
                 zIndex: "1 !important",
+                borderRadius: "12px",
               }
         }
         type="button"
         onClick={() => floorClick(roomObj)}
       >
-        <div>
-          {roomObj?.Room} - {roomObj.SF || 0} SF
-        </div>
+        <Tooltip
+          title={
+            <Typography style={{ fontSize: "12px" }}>
+              {roomObj?.Room} - {roomObj.SF || 0} SF
+            </Typography>
+          }
+        >
+          <div style={{ fontSize: "8px" }}>
+            {roomObj?.Room} - {roomObj.SF || 0} SF
+          </div>
+        </Tooltip>
       </button>
     </>
   );

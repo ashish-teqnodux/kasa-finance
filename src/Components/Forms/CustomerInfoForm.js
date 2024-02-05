@@ -1,47 +1,14 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 import Input from "../UI/Input";
-import MuiDatePicker from "../UI/MuiDatePicker";
-import DropdownField from "../UI/DropdownField";
-import MuiAutoComplete from "../UI/MuiAutoComplete";
+import { Constants } from "../../utils/Constants";
 
-const multiOptions = [
-  { title: "None", value: "None" },
-  {
-    title: "Planned Furniture Move After Project",
-    value: "Planned Furniture Move After Project",
-  },
-  {
-    title: "Other trades will be working in the space",
-    value: "Other trades will be working in the space",
-  },
-  {
-    title: "Project planned around a vacation",
-    value: "Project planned around a vacation",
-  },
-  {
-    title: "Customer has critical timing requirements",
-    value: "Customer has critical timing requirements",
-  },
-];
-
-const CustomerInfoForm = ({
-  register,
-  errors,
-  date,
-  onChange,
-  handleChangeMultiSelect,
-  multiFieldValue,
-  handleChangeDropdown,
-  dropdownValue,
-  getValues,
-  data,
-}) => {
+const CustomerInfoForm = ({ register, errors, getValues, data }) => {
   return (
     <Box
       sx={{
         pb: "30px",
-        width: "30%",
+        width: Constants.MIDDLE_FORM_WIDTH,
         // margin: "auto",
       }}
     >

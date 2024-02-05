@@ -3,6 +3,7 @@ import { Box, Grid } from "@mui/material";
 import Input from "../UI/Input";
 import MuiDatePicker from "../UI/MuiDatePicker";
 import DropdownField from "../UI/DropdownField";
+import { Constants } from "../../utils/Constants";
 
 const FinanceForm = ({
   register,
@@ -18,7 +19,7 @@ const FinanceForm = ({
     <Box
       sx={{
         pb: "30px",
-        width: "30%",
+        width: Constants.MIDDLE_FORM_WIDTH,
         // margin: "auto",
       }}
     >
