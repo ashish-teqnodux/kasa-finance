@@ -209,7 +209,7 @@ const ScopeForm = ({
           <Grid
             container
             spacing={2}
-            sx={{ maxHeight: "600px", overflowY: "auto", px: 1 }}
+            sx={{ maxHeight: "580px", overflowY: "auto", px: 1 }}
           >
             <Grid item xs={12}>
               <DropdownField
@@ -402,7 +402,7 @@ const ScopeForm = ({
           <Grid
             container
             spacing={2}
-            sx={{ maxHeight: "600px", overflowY: "auto", px: 1 }}
+            sx={{ maxHeight: "580px", overflowY: "auto", px: 1 }}
           >
             {isInstall && (
               <Grid item xs={12}>

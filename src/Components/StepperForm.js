@@ -497,19 +497,21 @@ const StepperForm = ({ data, id }) => {
     let isRefinishing = false;
 
     if (initialScopeData?.length > 0) {
-      for (const floor of initialScopeData) {
-        if (floor?.rooms?.length > 0) {
-          for (const room of floor.rooms) {
-            if (room?.Is_Install) {
-              isInstall = true;
-            }
-            if (room?.Is_Refinishing) {
-              isRefinishing = true;
-            }
-          }
+      for (const room of initialScopeData) {
+        if (room?.Is_Install) {
+          isInstall = true;
+        }
+        if (room?.Is_Refinishing) {
+          isRefinishing = true;
         }
       }
     }
+
+    console.log(
+      isInstall,
+      dropdownValue?.["Is any leveling needed"],
+      "isInstall"
+    );
 
     let dateFormatWithOffset =
       dayjs(date?.["Deposit Taken Date"]).format("YYYY-MM-DDTHH:mm:ss") +
@@ -697,7 +699,7 @@ const StepperForm = ({ data, id }) => {
       Resulting_Scope: initialScopeData,
       Staircases_Scope: initialStaircaseData,
     };
-    
+
     const pushData = await pushResultDatatoZoho(finalBody, id);
 
     if (pushData?.data) {
