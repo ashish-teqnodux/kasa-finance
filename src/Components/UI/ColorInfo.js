@@ -3,15 +3,8 @@ import React from "react";
 
 const ColorInfo = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        mb: 2,
-      }}
-    >
-      <Box sx={{ display: "flex", alignItems: "start", gap: 1 }}>
+    <Box sx={{ mb: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <Box
           sx={{
             display: "flex",
@@ -48,6 +41,8 @@ const ColorInfo = () => {
           ></Box>
           <Typography sx={{ fontSize: "12px" }}>Refinishing</Typography>
         </Box>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "start" }}>
         <Box
           sx={{
             display: "flex",
@@ -66,10 +61,36 @@ const ColorInfo = () => {
           ></Box>
           <Typography
             sx={{
-              fontSize: "11px",
+              fontSize: "12px",
             }}
           >
             Installation & Refinishing
+          </Typography>
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "start" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              bgcolor: "#80807b",
+            }}
+          ></Box>
+          <Typography
+            sx={{
+              fontSize: "12px",
+            }}
+          >
+            Out of scope
           </Typography>
         </Box>
       </Box>

@@ -584,7 +584,11 @@ const ScopeForm = ({
           <Grid item xs={12}>
             <ColorInfo />
           </Grid>
-          <ProjectGrid container spacing={1}>
+          <ProjectGrid
+            container
+            spacing={1}
+            sx={{ maxHeight: "550px", overflowY: "auto" }}
+          >
             {floors?.length > 0 &&
               floors.map((floor, index) => {
                 return (
