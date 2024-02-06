@@ -204,6 +204,23 @@ const CustomerInfoForm = ({
                     value={data?.["Floor level"]}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <DropdownField
+                    id="Metal doors to be scribed around?"
+                    name="Metal doors to be scribed around?"
+                    label="Metal doors to be scribed around?"
+                    register={register}
+                    errors={errors}
+                    value={dropdownValue?.["Metal doors to be scribed around?"]}
+                    handleChangeDropdown={(e) =>
+                      handleChangeDropdown(
+                        e,
+                        "Metal doors to be scribed around?"
+                      )
+                    }
+                    options={["Yes", "No"]}
+                  />
+                </Grid>
               </>
             )}
             <Grid item xs={12}>
@@ -251,20 +268,6 @@ const CustomerInfoForm = ({
                 value={dropdownValue?.["Scope Confirmed"]}
                 handleChangeDropdown={(e) =>
                   handleChangeDropdown(e, "Scope Confirmed")
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Metal doors to be scribed around?"
-                name="Metal doors to be scribed around?"
-                label="Metal doors to be scribed around?"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Metal doors to be scribed around?"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Metal doors to be scribed around?")
                 }
                 options={["Yes", "No"]}
               />

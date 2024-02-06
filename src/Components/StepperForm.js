@@ -625,10 +625,13 @@ const StepperForm = ({ data, id }) => {
           ? dropdownValue?.["Doorman building?"] || ""
           : "",
       "Metal doors to be scribed around?":
-        dropdownValue?.["Metal doors to be scribed around?"] === "Yes"
-          ? true
-          : dropdownValue?.["Metal doors to be scribed around?"] === "No"
-          ? false
+        dropdownValue?.["Property type"] === "Apartment" ||
+        dropdownValue?.["Property type"] === "Condo"
+          ? dropdownValue?.["Metal doors to be scribed around?"] === "Yes"
+            ? true
+            : dropdownValue?.["Metal doors to be scribed around?"] === "No"
+            ? false
+            : ""
           : "",
       "Doors jams expected to be cut?":
         dropdownValue?.["Doors jams expected to be cut?"] === "Yes"
