@@ -32,7 +32,7 @@ import MuiCustomModal from "./UI/MuiCustomModal";
 import CustomerInfoForm from "./Forms/CustomerInfoForm";
 
 const steps = [
-  "Customer Info.",
+  "Project Overview",
   "Finance",
   "Timing",
   "Logistics",
@@ -261,6 +261,14 @@ const StepperForm = ({ data, id }) => {
     );
     setValue("Floor level", data?.["Floor level"]);
     setValue("Other stain/finish notes", data?.["Other stain/finish notes"]);
+    setValue("Customer Name", data?.["Customer Name"]);
+    setValue("Unit", data?.Unit);
+    setValue("Street", data?.Street);
+    setValue("City", data?.City);
+    setValue("State", data?.State);
+    setValue("Zip Code", data?.["Zip Code"]);
+    setValue("Mobile_Phone", data?.Mobile_Phone);
+    setValue("Other_Phone", data?.Other_Phone);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -507,12 +515,6 @@ const StepperForm = ({ data, id }) => {
       }
     }
 
-    console.log(
-      isInstall,
-      dropdownValue?.["Is any leveling needed"],
-      "isInstall"
-    );
-
     let dateFormatWithOffset =
       dayjs(date?.["Deposit Taken Date"]).format("YYYY-MM-DDTHH:mm:ss") +
       `-${timeZoneOffset}`;
@@ -688,6 +690,14 @@ const StepperForm = ({ data, id }) => {
           ? data?.["Floor level"] || ""
           : "",
       "Other stain/finish notes": data?.["Other stain/finish notes"] || "",
+      "Customer Name": data?.["Customer Name"] || "",
+      Unit: data?.Unit || "",
+      Street: data?.Street || "",
+      City: data?.City || "",
+      State: data?.State || "",
+      "Zip Code": data?.["Zip Code"] || "",
+      Mobile_Phone: data?.Mobile_Phone || "",
+      Other_Phone: data?.Other_Phone || "",
     };
 
     let finalBody = {
@@ -749,7 +759,7 @@ const StepperForm = ({ data, id }) => {
           ))}
         </Stepper>
         <div>
-          <Divider sx={{ my: "30px" }} />
+          <Divider sx={{ my: "15px" }} />
         </div>
         <div>
           <React.Fragment>

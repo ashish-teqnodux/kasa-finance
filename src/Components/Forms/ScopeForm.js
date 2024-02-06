@@ -1,23 +1,32 @@
 import React from "react";
-import { Box, Grid, Typography, styled } from "@mui/material";
+import { Box, Divider, Grid, Typography, styled } from "@mui/material";
 import ProjectFloors from "../UI/ProjectFloors";
 import DropdownField from "../UI/DropdownField";
 import Input from "../UI/Input";
 import MuiAutoComplete from "../UI/MuiAutoComplete";
 import StaircaseButton from "../UI/StaricaseButton";
+import ColorInfo from "../UI/ColorInfo";
 
 const ProjectGrid = styled(Grid)(({ theme }) => ({
-  // padding: "10px 0 10px 24px",
   display: "flex",
   justifyContent: "flex-start",
   width: "100%",
   // [theme.breakpoints.down("sm")]: {
   //   width: "100%", // Adjust for small screens (e.g., phones)
   // },
-  // [theme.breakpoints.up("md")]: {
-  //   width: "100%", // Adjust for large screens (e.g., desktops)
-  // },
 }));
+
+const typoHeaderStyle = {
+  textAlign: "center",
+  textDecoration: "underline",
+  fontSize: "18px",
+  fontWeight: "bold",
+  color: "#1E2E5A",
+};
+
+const gridItemStyle = {
+  paddingLeft: 0,
+};
 
 const multiOptions = [
   { title: "Aged Barrel", value: "Aged Barrel" },
@@ -196,6 +205,80 @@ const ScopeForm = ({
     }
   }
 
+  const both = React.useMemo(() => {
+    return isInstall && isRefinishing;
+  }, [floors, isInstall, isRefinishing]);
+
+  const commonQuestions = React.useMemo(() => {
+    return (
+      <>
+        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+          <DropdownField
+            id="Any project complications to be discussed with OPS"
+            name="Any project complications to be discussed with OPS"
+            label="Any project complications to be discussed with OPS"
+            register={register}
+            errors={errors}
+            value={
+              dropdownValue?.[
+                "Any project complications to be discussed with OPS"
+              ]
+            }
+            handleChangeDropdown={(e) =>
+              handleChangeDropdown(
+                e,
+                "Any project complications to be discussed with OPS"
+              )
+            }
+            options={["Yes", "No"]}
+          />
+        </Grid>
+        {dropdownValue?.[
+          "Any project complications to be discussed with OPS"
+        ] === "Yes" && (
+          <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+            <Input
+              id="Complications to be discussed"
+              name="Complications to be discussed"
+              type="text"
+              label="Complications to be discussed"
+              register={register}
+              errors={errors}
+              getValues={getValues}
+              value={data?.["Complications to be discussed"]}
+            />
+          </Grid>
+        )}
+        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+          <DropdownField
+            id="3 coats of finish in 1 day allowed?"
+            name="3 coats of finish in 1 day allowed?"
+            label="3 coats of finish in 1 day allowed?"
+            register={register}
+            errors={errors}
+            value={dropdownValue?.["3 coats of finish in 1 day allowed?"]}
+            handleChangeDropdown={(e) =>
+              handleChangeDropdown(e, "3 coats of finish in 1 day allowed?")
+            }
+            options={["Yes", "No"]}
+          />
+        </Grid>
+        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+          <Input
+            id="Other stain/finish notes"
+            name="Other stain/finish notes"
+            type="text"
+            label="Other stain/finish notes"
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            value={data?.["Other stain/finish notes"]}
+          />
+        </Grid>
+      </>
+    );
+  }, [dropdownValue, data]);
+
   return (
     <Box
       sx={{
@@ -205,133 +288,107 @@ const ScopeForm = ({
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={3}>
+        {isRefinishing && (
+          <Grid item xs={both ? 2.5 : 5}>
+            <Grid item xs={12}>
+              <Typography
+                variant="h6"
+                sx={typoHeaderStyle}
+                style={{ marginBottom: "20px" }}
+              >
+                Refinishing
+              </Typography>
+            </Grid>
+            <Grid
+              container
+              spacing={2}
+              sx={{ maxHeight: "600px", overflowY: "auto", px: 1 }}
+            >
+              {(both || isRefinishing) && commonQuestions}
+              <Grid style={gridItemStyle} item xs={12}>
+                <DropdownField
+                  id="Is the customer staining the floor"
+                  name="Is the customer staining the floor"
+                  label="Is the customer staining the floor"
+                  register={register}
+                  errors={errors}
+                  value={dropdownValue?.["Is the customer staining the floor"]}
+                  handleChangeDropdown={(e) =>
+                    handleChangeDropdown(
+                      e,
+                      "Is the customer staining the floor"
+                    )
+                  }
+                  options={["Yes", "No"]}
+                />
+              </Grid>
+              <Grid style={gridItemStyle} item xs={12}>
+                <MuiAutoComplete
+                  id="Stain Sample Chosen By The Customer"
+                  name="Stain Sample Chosen By The Customer"
+                  label="Stain Sample Chosen By The Customer"
+                  options={multiOptions}
+                  handleChangeMultiSelect={(event, newValue) =>
+                    handleChangeMultiSelect(
+                      event,
+                      newValue,
+                      "Stain Sample Chosen By The Customer"
+                    )
+                  }
+                  values={
+                    multiFieldValue?.["Stain Sample Chosen By The Customer"]
+                  }
+                />
+              </Grid>
+              <Grid style={gridItemStyle} item xs={12}>
+                <DropdownField
+                  id="Gloss level chosen by customer"
+                  name="Gloss level chosen by customer"
+                  label="Gloss level chosen by customer"
+                  register={register}
+                  errors={errors}
+                  value={dropdownValue?.["Gloss level chosen by customer"]}
+                  handleChangeDropdown={(e) =>
+                    handleChangeDropdown(e, "Gloss level chosen by customer")
+                  }
+                  options={[
+                    "Matte",
+                    "Satin",
+                    "Semi-Gloss",
+                    "Semi-Gloss",
+                    "TBD",
+                  ]}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+        {isRefinishing && (
           <Grid
-            container
-            spacing={2}
-            sx={{ maxHeight: "580px", overflowY: "auto", px: 1 }}
+            item
+            xs={0.5}
+            sx={{ display: "flex", justifyContent: "center" }}
           >
+            <Divider orientation="vertical" />
+          </Grid>
+        )}
+        {isInstall && (
+          <Grid item xs={both ? 2.5 : 5}>
             <Grid item xs={12}>
-              <DropdownField
-                id="Scope Confirmed"
-                name="Scope Confirmed"
-                label="Scope Confirmed"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Scope Confirmed"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Scope Confirmed")
-                }
-                options={["Yes", "No"]}
-              />
+              <Typography
+                variant="h6"
+                sx={typoHeaderStyle}
+                style={{ marginBottom: "20px" }}
+              >
+                Installation
+              </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Are we matching any existing floor (Refi. orInst.)"
-                name="Are we matching any existing floor (Refi. orInst.)"
-                label="Are we matching any existing floor (Refi. orInst.)"
-                register={register}
-                errors={errors}
-                value={
-                  dropdownValue?.[
-                    "Are we matching any existing floor (Refi. orInst.)"
-                  ]
-                }
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(
-                    e,
-                    "Are we matching any existing floor (Refi. orInst.)"
-                  )
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Any project complications to be discussed with OPS"
-                name="Any project complications to be discussed with OPS"
-                label="Any project complications to be discussed with OPS"
-                register={register}
-                errors={errors}
-                value={
-                  dropdownValue?.[
-                    "Any project complications to be discussed with OPS"
-                  ]
-                }
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(
-                    e,
-                    "Any project complications to be discussed with OPS"
-                  )
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            {dropdownValue?.[
-              "Any project complications to be discussed with OPS"
-            ] === "Yes" && (
-              <Grid item xs={12}>
-                <Input
-                  id="Complications to be discussed"
-                  name="Complications to be discussed"
-                  type="text"
-                  label="Complications to be discussed"
-                  register={register}
-                  errors={errors}
-                  getValues={getValues}
-                  value={data?.["Complications to be discussed"]}
-                />
-              </Grid>
-            )}
-            <Grid item xs={12}>
-              <DropdownField
-                id="Why Customer is Doing the Project"
-                name="Why Customer is Doing the Project"
-                label="Why Customer is Doing the Project"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Why Customer is Doing the Project"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Why Customer is Doing the Project")
-                }
-                options={[
-                  "Moving into a new house",
-                  "Looking for an exact color",
-                  "Improve Squeaks",
-                  "Improve Leveling",
-                  "Damage to prior floor",
-                  "Other",
-                ]}
-              />
-            </Grid>
-            {dropdownValue?.["Why Customer is Doing the Project"] ===
-              "Other" && (
-              <Grid item xs={12}>
-                <Input
-                  id="Other Reason Customer Is Doing Project"
-                  name="Other Reason Customer Is Doing Project"
-                  type="text"
-                  label="Other Reason Customer Is Doing Project"
-                  register={register}
-                  errors={errors}
-                  getValues={getValues}
-                  value={data?.["Other Reason Customer Is Doing Project"]}
-                />
-              </Grid>
-            )}
-            <Grid item xs={12}>
-              <Input
-                id="Most Important thing to customer about project"
-                name="Most Important thing to customer about project"
-                type="text"
-                label="Most Important thing to customer about project"
-                register={register}
-                errors={errors}
-                getValues={getValues}
-                value={data?.["Most Important thing to customer about project"]}
-              />
-            </Grid>
-            {isInstall && (
+            <Grid
+              container
+              spacing={2}
+              // sx={{ maxHeight: "550px", overflowY: "auto", px: 1 }}
+            >
+              {!both && commonQuestions}
               <Grid item xs={12}>
                 <DropdownField
                   id="Installation Layout Style of New Floor"
@@ -357,8 +414,6 @@ const ScopeForm = ({
                   ]}
                 />
               </Grid>
-            )}
-            {isInstall && (
               <Grid item xs={12}>
                 <Input
                   id="Installation Layout Notes"
@@ -371,8 +426,6 @@ const ScopeForm = ({
                   value={data?.["Installation Layout Notes"]}
                 />
               </Grid>
-            )}
-            {isInstall && (
               <Grid item xs={12}>
                 <DropdownField
                   id="Will the new floor be lower than the current floor"
@@ -394,285 +447,143 @@ const ScopeForm = ({
                   options={["Yes", "No", "TBD"]}
                 />
               </Grid>
-            )}
+              <Grid item xs={12}>
+                <DropdownField
+                  id="Doors jams expected to be cut?"
+                  name="Doors jams expected to be cut?"
+                  label="Doors jams expected to be cut?"
+                  register={register}
+                  errors={errors}
+                  value={dropdownValue?.["Doors jams expected to be cut?"]}
+                  handleChangeDropdown={(e) =>
+                    handleChangeDropdown(e, "Doors jams expected to be cut?")
+                  }
+                  options={["Yes", "No"]}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <DropdownField
+                  id="Doors expected to be cut?"
+                  name="Doors expected to be cut?"
+                  label="Doors expected to be cut?"
+                  register={register}
+                  errors={errors}
+                  value={dropdownValue?.["Doors expected to be cut?"]}
+                  handleChangeDropdown={(e) =>
+                    handleChangeDropdown(e, "Doors expected to be cut?")
+                  }
+                  options={["Yes", "No"]}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-
-        <Grid item xs={3}>
+        )}
+        {isInstall && (
           <Grid
-            container
-            spacing={2}
-            sx={{ maxHeight: "580px", overflowY: "auto", px: 1 }}
+            item
+            xs={0.5}
+            sx={{ display: "flex", justifyContent: "center" }}
           >
-            {isInstall && (
-              <Grid item xs={12}>
-                <DropdownField
-                  id="Is any leveling needed"
-                  name="Is any leveling needed"
-                  label="Is any leveling needed"
-                  register={register}
-                  errors={errors}
-                  value={dropdownValue?.["Is any leveling needed"]}
-                  handleChangeDropdown={(e) =>
-                    handleChangeDropdown(e, "Is any leveling needed")
-                  }
-                  options={["Yes", "No"]}
-                />
-              </Grid>
-            )}
-            {isRefinishing && (
-              <Grid item xs={12}>
-                <DropdownField
-                  id="Is the customer staining the floor"
-                  name="Is the customer staining the floor"
-                  label="Is the customer staining the floor"
-                  register={register}
-                  errors={errors}
-                  value={dropdownValue?.["Is the customer staining the floor"]}
-                  handleChangeDropdown={(e) =>
-                    handleChangeDropdown(
-                      e,
-                      "Is the customer staining the floor"
-                    )
-                  }
-                  options={["Yes", "No"]}
-                />
-              </Grid>
-            )}
-            {isRefinishing && (
-              <Grid item xs={12}>
-                <MuiAutoComplete
-                  id="Stain Sample Chosen By The Customer"
-                  name="Stain Sample Chosen By The Customer"
-                  label="Stain Sample Chosen By The Customer"
-                  options={multiOptions}
-                  handleChangeMultiSelect={(event, newValue) =>
-                    handleChangeMultiSelect(
-                      event,
-                      newValue,
-                      "Stain Sample Chosen By The Customer"
-                    )
-                  }
-                  values={
-                    multiFieldValue?.["Stain Sample Chosen By The Customer"]
-                  }
-                />
-              </Grid>
-            )}
-            {isRefinishing && (
-              <Grid item xs={12}>
-                <DropdownField
-                  id="Gloss level chosen by customer"
-                  name="Gloss level chosen by customer"
-                  label="Gloss level chosen by customer"
-                  register={register}
-                  errors={errors}
-                  value={dropdownValue?.["Gloss level chosen by customer"]}
-                  handleChangeDropdown={(e) =>
-                    handleChangeDropdown(e, "Gloss level chosen by customer")
-                  }
-                  options={[
-                    "Matte",
-                    "Satin",
-                    "Semi-Gloss",
-                    "Semi-Gloss",
-                    "TBD",
-                  ]}
-                />
-              </Grid>
-            )}
-            <Grid item xs={12}>
-              <DropdownField
-                id="Metal doors to be scribed around?"
-                name="Metal doors to be scribed around?"
-                label="Metal doors to be scribed around?"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Metal doors to be scribed around?"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Metal doors to be scribed around?")
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Doors jams expected to be cut?"
-                name="Doors jams expected to be cut?"
-                label="Doors jams expected to be cut?"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Doors jams expected to be cut?"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Doors jams expected to be cut?")
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Doors expected to be cut?"
-                name="Doors expected to be cut?"
-                label="Doors expected to be cut?"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Doors expected to be cut?"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Doors expected to be cut?")
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DropdownField
-                id="Doors expected to be cut?"
-                name="Doors expected to be cut?"
-                label="Doors expected to be cut?"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Doors expected to be cut?"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Doors expected to be cut?")
-                }
-                options={["Yes", "No"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Input
-                id="Other stain/finish notes"
-                name="Other stain/finish notes"
-                type="text"
-                label="Other stain/finish notes"
-                register={register}
-                errors={errors}
-                getValues={getValues}
-                value={data?.["Other stain/finish notes"]}
-              />
-            </Grid>
+            <Divider orientation="vertical" />
           </Grid>
-        </Grid>
-
-        <Grid item xs={3}>
+        )}
+        <Grid item xs={2.5}>
           <Grid
             container
             spacing={2}
             justifyContent="center"
             alignItems="center"
-            // sx={{ display: "flex", justifyContent: "center" }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
             <Grid item xs={12}>
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  textDecoration: "underline",
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  color: "#1E2E5A",
-                }}
-              >
-                Staircase In Scope
-              </Typography>{" "}
+              <Typography sx={typoHeaderStyle}>Staircase In Scope</Typography>{" "}
             </Grid>
             <Grid
               item
               xs={12}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <Box sx={{ width: "80%" }}>
+              <Box sx={{ width: "100%" }}>
                 {initialStaircaseData?.length > 0 &&
-                  initialStaircaseData.map((staircase, index) => {
+                  initialStaircaseData.map((staircase) => {
                     return (
-                      <div style={{ marginTop: "4px" }}>
+                      <div style={{ margin: "5px 0" }}>
                         <StaircaseButton
                           staircase={staircase}
                           staircaseClick={staircaseClick}
                         />
+                        {staircase?.Staircase_Scope && (
+                          <Grid container spacing={2} sx={{ mt: "5px" }}>
+                            <Grid item xs={12}>
+                              <DropdownField
+                                id="Staircase Scope"
+                                name="Staircase Scope"
+                                label="Staircase Scope"
+                                register={register}
+                                errors={errors}
+                                value={staircase?.Staircase_Scope}
+                                handleChangeDropdown={(e) =>
+                                  handleChangeStaricaseDropdown(
+                                    e,
+                                    staircase?.Staircase_Name,
+                                    "Staircase Scope"
+                                  )
+                                }
+                                options={[
+                                  "Refinishing Only",
+                                  "Unfinished Install with Refinishing",
+                                  "Prefinished Install",
+                                  "Unfinished NuStair with Refinishing",
+                                  "Prefinished NuStair",
+                                  "Buff and Recoat",
+                                  "Other",
+                                ]}
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <DropdownField
+                                id="Is there a staircase rip out?"
+                                name="Is there a staircase rip out?"
+                                label="Is there a staircase rip out?"
+                                register={register}
+                                errors={errors}
+                                value={staircase?.Is_there_a_staircase_rip_out}
+                                handleChangeDropdown={(e) =>
+                                  handleChangeStaricaseDropdown(
+                                    e,
+                                    staircase?.Staircase_Name,
+                                    "Is there a staircase rip out?"
+                                  )
+                                }
+                                options={[
+                                  "No Staircase Rip Out Required",
+                                  "Rip Out Required: Customer Removing",
+                                  "Wall to wall carpet to be removed by FlooredAtHome",
+                                  "Wall to wall carpet with stringers to be removed by FlooredAtHome",
+                                  "Runner to be removed by FlooredAtHome",
+                                ]}
+                              />
+                            </Grid>
+                          </Grid>
+                        )}
                       </div>
                     );
                   })}
               </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2} sx={{ mt: "5px" }}>
-                {initialStaircaseData?.map((sc) => {
-                  if (sc?.Staircase_Scope) {
-                    return (
-                      <>
-                        <Grid item xs={12} sx={{ textAlign: "start" }}>
-                          <Typography
-                            sx={{
-                              fontSize: "14px",
-                              color: "#1E2E5A",
-                              fontWeight: "bold",
-                              textDecoration: "underline",
-                              textAlign: "center",
-                            }}
-                          >
-                            {sc?.Staircase_Name}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <DropdownField
-                            id="Staircase Scope"
-                            name="Staircase Scope"
-                            label="Staircase Scope"
-                            register={register}
-                            errors={errors}
-                            value={sc?.Staircase_Scope}
-                            handleChangeDropdown={(e) =>
-                              handleChangeStaricaseDropdown(
-                                e,
-                                sc?.Staircase_Name,
-                                "Staircase Scope"
-                              )
-                            }
-                            options={[
-                              "Refinishing Only",
-                              "Unfinished Install with Refinishing",
-                              "Prefinished Install",
-                              "Unfinished NuStair with Refinishing",
-                              "Prefinished NuStair",
-                              "Buff and Recoat",
-                              "Other",
-                            ]}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <DropdownField
-                            id="Is there a staircase rip out?"
-                            name="Is there a staircase rip out?"
-                            label="Is there a staircase rip out?"
-                            register={register}
-                            errors={errors}
-                            value={sc?.Is_there_a_staircase_rip_out}
-                            handleChangeDropdown={(e) =>
-                              handleChangeStaricaseDropdown(
-                                e,
-                                sc?.Staircase_Name,
-                                "Is there a staircase rip out?"
-                              )
-                            }
-                            options={[
-                              "No Staircase Rip Out Required",
-                              "Rip Out Required: Customer Removing",
-                              "Wall to wall carpet to be removed by FlooredAtHome",
-                              "Wall to wall carpet with stringers to be removed by FlooredAtHome",
-                              "Runner to be removed by FlooredAtHome",
-                            ]}
-                          />
-                        </Grid>
-                      </>
-                    );
-                  } else {
-                    return <></>;
-                  }
-                })}
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
-
+        <Grid item xs={0.5} sx={{ display: "flex", justifyContent: "center" }}>
+          <Divider orientation="vertical" />
+        </Grid>
         <Grid item xs={3}>
+          <Grid item xs={12}>
+            <ColorInfo />
+          </Grid>
           <ProjectGrid container spacing={1}>
             {floors?.length > 0 &&
               floors.map((floor, index) => {

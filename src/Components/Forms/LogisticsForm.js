@@ -46,60 +46,6 @@ const LogisticsForm = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <DropdownField
-                id="Property type"
-                name="Property type"
-                label="Property type"
-                register={register}
-                errors={errors}
-                value={dropdownValue?.["Property type"]}
-                handleChangeDropdown={(e) =>
-                  handleChangeDropdown(e, "Property type")
-                }
-                options={[
-                  "Single Family House",
-                  "Multi Family House",
-                  "Apartment",
-                  "Condo",
-                  "Townhouse",
-                  "Gated Community",
-                  "Commercial Space",
-                  "Private House",
-                ]}
-              />
-            </Grid>
-            {(dropdownValue?.["Property type"] === "Apartment" ||
-              dropdownValue?.["Property type"] === "Condo") && (
-              <>
-                <Grid item xs={12}>
-                  <DropdownField
-                    id="Doorman building?"
-                    name="Doorman building?"
-                    label="Doorman building?"
-                    register={register}
-                    errors={errors}
-                    value={dropdownValue?.["Doorman building?"]}
-                    handleChangeDropdown={(e) =>
-                      handleChangeDropdown(e, "Doorman building?")
-                    }
-                    options={["Yes", "No"]}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Input
-                    id="Floor level"
-                    name="Floor level"
-                    type="text"
-                    label="Floor level"
-                    register={register}
-                    errors={errors}
-                    getValues={getValues}
-                    value={data?.["Floor level"]}
-                  />
-                </Grid>
-              </>
-            )}
-            <Grid item xs={12}>
-              <DropdownField
                 id="Confirmation for OPS to reach out to the customer"
                 name="Confirmation for OPS to reach out to the customer"
                 label="Confirmation for OPS to reach out to the customer"
@@ -281,8 +227,6 @@ const LogisticsForm = ({
                     handleChangeDropdown(e, "Material Confirmed")
                   }
                   options={[
-                    "No Material Required",
-                    "No Material Required : Customer Providing",
                     "Material Required: Confirmed",
                     "Material Required: Not Yet Confirmed",
                   ]}
