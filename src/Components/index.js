@@ -30,9 +30,9 @@ const StepperIndexPage = () => {
   useEffect(() => {
     if (!!auth) {
       fetchData();
-      setInterval(() => {
-        fetchData();
-      }, 60 * 1000);
+      // setInterval(() => {
+      //   fetchData();
+      // }, 10 * 1000);
     }
   }, []);
 
