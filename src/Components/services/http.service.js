@@ -25,7 +25,7 @@ export const getWithOutAuth = (url) => {
         }
       })
       .catch((ex) => {
-        resolve({ status: false, error: ex.message });
+        resolve({ status: false, data: ex.response.data });
       });
   });
 };

@@ -11,6 +11,23 @@ const CustomerInfoForm = ({
   handleChangeDropdown,
   dropdownValue,
 }) => {
+  const secondColumnRef = React.useRef(null);
+
+  const internalHandleChangeDropdown = React.useCallback(
+    (event, key) => {
+      if (key === "Any project complications to be discussed with OPS") {
+        if (secondColumnRef.current) {
+          setTimeout(() => {
+            secondColumnRef.current.scrollTop =
+              secondColumnRef.current.scrollHeight;
+          }, 0);
+        }
+      }
+      handleChangeDropdown(event, key);
+    },
+    [dropdownValue]
+  );
+
   return (
     <Box
       sx={{
@@ -150,6 +167,7 @@ const CustomerInfoForm = ({
           <Grid
             container
             spacing={2}
+            ref={secondColumnRef}
             sx={{ maxHeight: "550px", overflowY: "auto", px: 1 }}
           >
             <Grid item xs={12}>
@@ -333,7 +351,7 @@ const CustomerInfoForm = ({
                   ]
                 }
                 handleChangeDropdown={(e) =>
-                  handleChangeDropdown(
+                  internalHandleChangeDropdown(
                     e,
                     "Any project complications to be discussed with OPS"
                   )
