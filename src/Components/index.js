@@ -12,19 +12,23 @@ const StepperIndexPage = () => {
 
   const queryValue = searchParams.get("id");
 
+  const fetchData = async () => {
+    const getData = await getResultingData(queryValue);
+    setData(getData?.data?.entity?.details?.output);
+  };
+
   useEffect(() => {
     if (!!auth) {
-      const fetchData = async () => {
-        const getData = await getResultingData(queryValue);
-        setData(getData?.data?.entity?.details?.output);
-      };
       fetchData();
+      setInterval(() => {
+        fetchData();
+      }, 60 * 1000);
     }
   }, []);
 
   return (
     <>
-      {Object.keys(data).length > 0 ? (
+      {Object.keys(data || {}).length > 0 ? (
         <div className="App">
           <StepperForm data={data} id={queryValue} />
         </div>

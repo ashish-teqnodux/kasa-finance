@@ -212,44 +212,11 @@ const ScopeForm = ({
   const commonQuestions = React.useMemo(() => {
     return (
       <>
-        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
-          <DropdownField
-            id="Any project complications to be discussed with OPS"
-            name="Any project complications to be discussed with OPS"
-            label="Any project complications to be discussed with OPS"
-            register={register}
-            errors={errors}
-            value={
-              dropdownValue?.[
-                "Any project complications to be discussed with OPS"
-              ]
-            }
-            handleChangeDropdown={(e) =>
-              handleChangeDropdown(
-                e,
-                "Any project complications to be discussed with OPS"
-              )
-            }
-            options={["Yes", "No"]}
-          />
-        </Grid>
-        {dropdownValue?.[
-          "Any project complications to be discussed with OPS"
-        ] === "Yes" && (
-          <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
-            <Input
-              id="Complications to be discussed"
-              name="Complications to be discussed"
-              type="text"
-              label="Complications to be discussed"
-              register={register}
-              errors={errors}
-              getValues={getValues}
-              value={data?.["Complications to be discussed"]}
-            />
-          </Grid>
-        )}
-        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+        <Grid
+          item
+          xs={12}
+          style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
+        >
           <DropdownField
             id="3 coats of finish in 1 day allowed?"
             name="3 coats of finish in 1 day allowed?"
@@ -263,7 +230,11 @@ const ScopeForm = ({
             options={["Yes", "No"]}
           />
         </Grid>
-        <Grid item xs={12} style={isRefinishing ? gridItemStyle : {}}>
+        <Grid
+          item
+          xs={12}
+          style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
+        >
           <Input
             id="Other stain/finish notes"
             name="Other stain/finish notes"
@@ -277,7 +248,7 @@ const ScopeForm = ({
         </Grid>
       </>
     );
-  }, [dropdownValue, data]);
+  }, [isRefinishing, dropdownValue, data]);
 
   return (
     <Box

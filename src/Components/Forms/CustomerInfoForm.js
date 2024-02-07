@@ -320,6 +320,43 @@ const CustomerInfoForm = ({
                 value={data?.["Most Important thing to customer about project"]}
               />
             </Grid>
+            <Grid item xs={12}>
+              <DropdownField
+                id="Any project complications to be discussed with OPS"
+                name="Any project complications to be discussed with OPS"
+                label="Any project complications to be discussed with OPS"
+                register={register}
+                errors={errors}
+                value={
+                  dropdownValue?.[
+                    "Any project complications to be discussed with OPS"
+                  ]
+                }
+                handleChangeDropdown={(e) =>
+                  handleChangeDropdown(
+                    e,
+                    "Any project complications to be discussed with OPS"
+                  )
+                }
+                options={["Yes", "No"]}
+              />
+            </Grid>
+            {dropdownValue?.[
+              "Any project complications to be discussed with OPS"
+            ] === "Yes" && (
+              <Grid item xs={12}>
+                <Input
+                  id="Complications to be discussed"
+                  name="Complications to be discussed"
+                  type="text"
+                  label="Complications to be discussed"
+                  register={register}
+                  errors={errors}
+                  getValues={getValues}
+                  value={data?.["Complications to be discussed"]}
+                />
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Grid>
