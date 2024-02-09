@@ -209,47 +209,6 @@ const ScopeForm = ({
     return isInstall && isRefinishing;
   }, [floors, isInstall, isRefinishing]);
 
-  const commonQuestions = React.useMemo(() => {
-    return (
-      <>
-        <Grid
-          item
-          xs={12}
-          style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
-        >
-          <DropdownField
-            id="3 coats of finish in 1 day allowed?"
-            name="3 coats of finish in 1 day allowed?"
-            label="3 coats of finish in 1 day allowed?"
-            register={register}
-            errors={errors}
-            value={dropdownValue?.["3 coats of finish in 1 day allowed?"]}
-            handleChangeDropdown={(e) =>
-              handleChangeDropdown(e, "3 coats of finish in 1 day allowed?")
-            }
-            options={["Yes", "No"]}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
-        >
-          <Input
-            id="Other stain/finish notes"
-            name="Other stain/finish notes"
-            type="text"
-            label="Other stain/finish notes"
-            register={register}
-            errors={errors}
-            getValues={getValues}
-            value={data?.["Other stain/finish notes"]}
-          />
-        </Grid>
-      </>
-    );
-  }, [isRefinishing, dropdownValue, data]);
-
   return (
     <Box
       sx={{
@@ -275,7 +234,43 @@ const ScopeForm = ({
               spacing={2}
               sx={{ maxHeight: "600px", overflowY: "auto", px: 1 }}
             >
-              {(both || isRefinishing) && commonQuestions}
+              <Grid
+                item
+                xs={12}
+                style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
+              >
+                <DropdownField
+                  id="3 coats of finish in 1 day allowed?"
+                  name="3 coats of finish in 1 day allowed?"
+                  label="3 coats of finish in 1 day allowed?"
+                  register={register}
+                  errors={errors}
+                  value={dropdownValue?.["3 coats of finish in 1 day allowed?"]}
+                  handleChangeDropdown={(e) =>
+                    handleChangeDropdown(
+                      e,
+                      "3 coats of finish in 1 day allowed?"
+                    )
+                  }
+                  options={["Yes", "No"]}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
+              >
+                <Input
+                  id="Other stain/finish notes"
+                  name="Other stain/finish notes"
+                  type="text"
+                  label="Other stain/finish notes"
+                  register={register}
+                  errors={errors}
+                  getValues={getValues}
+                  value={data?.["Other stain/finish notes"]}
+                />
+              </Grid>
               <Grid style={gridItemStyle} item xs={12}>
                 <DropdownField
                   id="Is the customer staining the floor"
@@ -359,7 +354,6 @@ const ScopeForm = ({
               spacing={2}
               // sx={{ maxHeight: "550px", overflowY: "auto", px: 1 }}
             >
-              {!both && commonQuestions}
               <Grid item xs={12}>
                 <DropdownField
                   id="Installation Layout Style of New Floor"
