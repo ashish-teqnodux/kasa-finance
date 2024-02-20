@@ -562,6 +562,7 @@ const ScopeForm = ({
                     floor={floor}
                     index={index}
                     floorClick={floorClick}
+                    data={data}
                   />
                 );
               })}

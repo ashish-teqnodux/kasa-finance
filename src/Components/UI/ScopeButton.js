@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Tooltip, Typography } from "@mui/material";
 
-const ScopeButton = ({ roomObj, floorClick }) => {
+const ScopeButton = ({ roomObj, floorClick, buttonName }) => {
   let {
     Is_Install,
     Is_Refinishing,
@@ -49,12 +49,12 @@ const ScopeButton = ({ roomObj, floorClick }) => {
         <Tooltip
           title={
             <Typography style={{ fontSize: "12px" }}>
-              {roomObj?.Room} - {roomObj.SF || 0} SF
+              {buttonName} - {roomObj.SF || 0} SF
             </Typography>
           }
         >
           <div style={{ fontSize: "8px" }}>
-            {roomObj?.Room} - {roomObj.SF || 0} SF
+            {buttonName} - {Number(roomObj.SF)?.toFixed(2) || 0} SF
           </div>
         </Tooltip>
       </button>

@@ -3,7 +3,13 @@ import React from "react";
 
 import ScopeButton from "./ScopeButton";
 
-const ProjectFloors = ({ floor, index, setIsDragEnabled, floorClick }) => {
+const ProjectFloors = ({
+  floor,
+  index,
+  setIsDragEnabled,
+  floorClick,
+  data,
+}) => {
   return (
     <Grid
       item
@@ -14,7 +20,7 @@ const ProjectFloors = ({ floor, index, setIsDragEnabled, floorClick }) => {
     >
       <div className="floorBtn">
         <div style={{ fontSize: "10px" }}>
-          {floor?.floor}-{floor?.totalSF}
+          {floor?.floor}-{(floor?.totalSF || 0)?.toFixed(2)}
         </div>
         <div
           className={`absolute -top-1 -right-1`}
@@ -23,10 +29,15 @@ const ProjectFloors = ({ floor, index, setIsDragEnabled, floorClick }) => {
       </div>
       <div className="roombtnSpacing">
         {floor.rooms.map((roomObj, roomIndex) => {
+          const fvRoom = data?.fv_rooms?.find(
+            (room) => room?.Name === roomObj.Room
+          );
+          const displayName = fvRoom?.Display_Name || fvRoom?.Name;
           return (
             <ScopeButton
               roomIndex={roomIndex}
-              buttonName={roomObj?.Room}
+              buttonName={displayName}
+              // buttonName={roomObj?.Room}
               type="button"
               roomObj={roomObj}
               floor={floor}
