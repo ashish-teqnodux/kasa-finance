@@ -381,12 +381,12 @@ const StepperForm = ({ data, id }) => {
           : data?.["Doors expected to be cut?"] === false
           ? "No"
           : "",
-      "3 coats of finish in 1 day allowed?":
-        data?.["3 coats of finish in 1 day allowed?"] === true
-          ? "Yes"
-          : data?.["3 coats of finish in 1 day allowed?"] === false
-          ? "No"
-          : "",
+      // "3 coats of finish in 1 day allowed?":
+      //   data?.["3 coats of finish in 1 day allowed?"] === true
+      //     ? "Yes"
+      //     : data?.["3 coats of finish in 1 day allowed?"] === false
+      //     ? "No"
+      //     : "",
     };
 
     setDate(dateFields);
@@ -645,12 +645,12 @@ const StepperForm = ({ data, id }) => {
           : dropdownValue?.["Doors expected to be cut?"] === "No"
           ? false
           : "",
-      "3 coats of finish in 1 day allowed?":
-        dropdownValue?.["3 coats of finish in 1 day allowed?"] === "Yes"
-          ? true
-          : dropdownValue?.["3 coats of finish in 1 day allowed?"] === "No"
-          ? false
-          : "",
+      // "3 coats of finish in 1 day allowed?":
+      //   dropdownValue?.["3 coats of finish in 1 day allowed?"] === "Yes"
+      //     ? true
+      //     : dropdownValue?.["3 coats of finish in 1 day allowed?"] === "No"
+      //     ? false
+      //     : "",
     };
 
     let noteValues = {
