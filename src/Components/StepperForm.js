@@ -269,6 +269,7 @@ const StepperForm = ({ data, id }) => {
     setValue("Zip Code", data?.["Zip Code"]);
     setValue("Mobile_Phone", data?.Mobile_Phone);
     setValue("Other_Phone", data?.Other_Phone);
+    setValue("Other Payment Notes", data?.["Other Payment Notes"]);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -701,6 +702,7 @@ const StepperForm = ({ data, id }) => {
       "Zip Code": data?.["Zip Code"] || "",
       Mobile_Phone: data?.Mobile_Phone || "",
       Other_Phone: data?.Other_Phone || "",
+      "Other Payment Notes": data?.["Other Payment Notes"] || "",
     };
 
     let finalBody = {

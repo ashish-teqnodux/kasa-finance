@@ -90,6 +90,18 @@ const FinanceForm = ({
             ]}
           />
         </Grid>
+        <Grid item xs={12}>
+          <Input
+            id="Other Payment Notes"
+            name="Other Payment Notes"
+            type="text"
+            label="Other Payment Notes"
+            register={register}
+            errors={errors}
+            value={data?.["Other Payment Notes"]}
+            getValues={getValues}
+          />
+        </Grid>
       </Grid>
     </Box>
   );
