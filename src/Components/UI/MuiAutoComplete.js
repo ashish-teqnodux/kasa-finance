@@ -1,6 +1,11 @@
 import styled from "@emotion/styled";
-import React from "react";
-import { Autocomplete, Paper, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Autocomplete,
+  Paper,
+  TextField,
+  createFilterOptions,
+} from "@mui/material";
 
 const StyledInput = styled(TextField)(() => ({
   "&.MuiTextField-root": {
@@ -46,17 +51,27 @@ const MuiAutoComplete = ({
   const handleChangeMulti = (event, newValue) => {
     handleChangeMultiSelect(event, newValue);
   };
+  console.log("options", options, values);
+
+  const [filterOpts, setFilterOpts] = useState([]);
+  useEffect(() => {
+    const filteredOptions = options.filter(
+      (option) => !values?.some((value) => value.title === option.title)
+    );
+    setFilterOpts(filteredOptions);
+  }, [values]);
 
   return (
     <Autocomplete
       multiple
       id="size-small-standard-multi"
       size="small"
-      options={options}
+      options={filterOpts}
       onChange={handleChangeMulti}
       getOptionLabel={(option) => option.title}
       value={values}
       PaperComponent={CustomPaper}
+      filterSelectedOptions
       renderInput={(params) => (
         <StyledInput
           {...params}

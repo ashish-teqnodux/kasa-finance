@@ -317,13 +317,7 @@ const ScopeForm = ({
                   handleChangeDropdown={(e) =>
                     handleChangeDropdown(e, "Gloss level chosen by customer")
                   }
-                  options={[
-                    "Matte",
-                    "Satin",
-                    "Semi-Gloss",
-                    "Semi-Gloss",
-                    "TBD",
-                  ]}
+                  options={["Matte", "Satin", "Semi-Gloss", "TBD"]}
                 />
               </Grid>
             </Grid>

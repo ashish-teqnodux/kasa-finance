@@ -140,6 +140,7 @@ const StepperForm = ({ data, id }) => {
   const [formData, setFormData] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
 
+  console.log(multiFieldValue, "multiFieldValue");
   const staticStage = React.useMemo(() => {
     return data?.Stage;
   }, [data]);
