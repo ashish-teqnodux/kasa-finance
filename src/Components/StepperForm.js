@@ -12,7 +12,10 @@ import { useReactHookForm } from "./hooks/useReactHookForm";
 import moment from "moment";
 import momentTz from "moment-timezone";
 import TimingForm from "./Forms/TimingForm";
-import { pushResultDatatoZoho } from "./services/finance.service";
+import {
+  pushResultDatatoZoho,
+  updateRoomName,
+} from "./services/finance.service";
 import dayjs from "dayjs";
 import LogisticsForm from "./Forms/LogisticsForm";
 import styled from "@emotion/styled";
@@ -30,6 +33,7 @@ import MuiSnackbar from "./UI/MuiSnackbar";
 import FurnitureForm from "./Forms/FurnitureForm";
 import MuiCustomModal from "./UI/MuiCustomModal";
 import CustomerInfoForm from "./Forms/CustomerInfoForm";
+import { checkIfRoomIsChanged } from "../utils/Constants";
 
 const steps = [
   "Project Overview",
@@ -132,6 +136,7 @@ const StepperForm = ({ data, id }) => {
   const [multiFieldValue, setMultiFieldValue] = React.useState({});
   const [dropdownValue, setDropdownValue] = React.useState({});
   const [initialScopeData, setInitialScopeData] = React.useState([]);
+  const [fixedScopeData] = React.useState(data?.Resulting_Scope || []);
   const [initialStaircaseData, setInitialStaircaseData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -139,6 +144,7 @@ const StepperForm = ({ data, id }) => {
   const [emailModal, setEmailModal] = React.useState(false);
   const [formData, setFormData] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
+  const [changedRooms, setChangedRooms] = React.useState([]);
 
   console.log(multiFieldValue, "multiFieldValue");
   const staticStage = React.useMemo(() => {
@@ -197,8 +203,63 @@ const StepperForm = ({ data, id }) => {
         newScopeData[findIndex].Is_Out_Of_Scope_For_Install = true;
       }
     }
+
+    updateChangedRooms(roomObj, newScopeData, findIndex);
     setInitialScopeData(newScopeData);
   };
+
+  const updateChangedRooms = React.useCallback(
+    (roomObj, newScopeData, index) => {
+      const oldRoomObj = fixedScopeData.find(
+        (item) => item.Room === roomObj.Room
+      );
+      const isRoomDataChanged = checkIfRoomIsChanged(
+        oldRoomObj,
+        newScopeData[index]
+      );
+      if (isRoomDataChanged) {
+        const isRoomExistInChangedRooms = changedRooms.find(
+          (item) => item.Name === roomObj.Room
+        );
+
+        let {
+          Is_Install,
+          Is_Refinishing,
+          Is_Out_Of_Scope_For_Refinish,
+          Is_Out_Of_Scope_For_Install,
+        } = newScopeData[index];
+
+        let fvRoom = data?.fv_rooms.find((room) => room.Name === roomObj.Room);
+        fvRoom = {
+          ...fvRoom,
+          Is_Install,
+          Is_Refinishing,
+          Is_Out_Of_Scope_For_Refinish,
+          Is_Out_Of_Scope_For_Install,
+        };
+
+        setChangedRooms((prev) => {
+          if (isRoomExistInChangedRooms) {
+            const curRoomIndex = prev.findIndex(
+              (item) => item.Name === roomObj.Room
+            );
+            prev[curRoomIndex] = fvRoom;
+            return prev;
+          } else {
+            return [...prev, fvRoom];
+          }
+        });
+      } else {
+        setChangedRooms((prev) => {
+          if (prev.find((item) => item.Name === roomObj.Room)) {
+            return prev.filter((item) => item.Name !== roomObj.Room);
+          }
+          return prev;
+        });
+      }
+    },
+    [setChangedRooms, floorClick, data, fixedScopeData]
+  );
 
   const EventSchema = yup.object().shape({
     // amount: yup
@@ -717,6 +778,17 @@ const StepperForm = ({ data, id }) => {
     };
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
+
+    if (changedRooms.length > 0) {
+      await Promise.all(
+        changedRooms.map((room) => {
+          const roomData = {
+            zc_room: room,
+          };
+          return updateRoomName(roomData);
+        })
+      );
+    }
 
     if (pushData?.data) {
       let message = pushData?.data?.entity?.code;

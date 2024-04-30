@@ -19,3 +19,7 @@ export const ADD_RESULT_DATA_TO_ZOHO = (id) =>
 export const GET_USER_BY_ID = (id) => {
   return `https://fvbackend.kasawalkthrough.com/api/auth/get-user/${id}`;
 };
+
+export const UPDATE_ROOM_NAME_IN_ZOHO = () => {
+  return "https://proposal-backend.kasawalkthrough.com/api/update-room-in-zoho";
+};
