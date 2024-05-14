@@ -136,7 +136,9 @@ const StepperForm = ({ data, id }) => {
   const [multiFieldValue, setMultiFieldValue] = React.useState({});
   const [dropdownValue, setDropdownValue] = React.useState({});
   const [initialScopeData, setInitialScopeData] = React.useState([]);
-  const [fixedScopeData] = React.useState(data?.Resulting_Scope || []);
+  const [fixedScopeData, setFixedScopeData] = React.useState(
+    data?.Resulting_Scope || []
+  );
   const [initialStaircaseData, setInitialStaircaseData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -146,13 +148,16 @@ const StepperForm = ({ data, id }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [changedRooms, setChangedRooms] = React.useState([]);
 
-  console.log(multiFieldValue, "multiFieldValue");
   const staticStage = React.useMemo(() => {
     return data?.Stage;
   }, [data]);
 
+  const deepCopyOfResultingScope = JSON.parse(
+    JSON.stringify(data?.Resulting_Scope)
+  );
+
   let groupedData = React.useMemo(() => {
-    const grouped = data?.Resulting_Scope?.reduce((acc, item) => {
+    const grouped = deepCopyOfResultingScope?.reduce((acc, item) => {
       const { Floor, SF } = item;
       const existingGroup = acc.find((group) => group.floor === Floor);
 
@@ -258,7 +263,7 @@ const StepperForm = ({ data, id }) => {
         });
       }
     },
-    [setChangedRooms, floorClick, data, fixedScopeData]
+    [setChangedRooms, floorClick, data, fixedScopeData, initialScopeData]
   );
 
   const EventSchema = yup.object().shape({
@@ -455,7 +460,7 @@ const StepperForm = ({ data, id }) => {
     setDate(dateFields);
     setMultiFieldValue(multiFields);
     setDropdownValue(dropdownFields);
-    setInitialScopeData(data?.Resulting_Scope);
+    setInitialScopeData(deepCopyOfResultingScope);
     setInitialStaircaseData(data?.Staircases_Scope);
   }, [data]);
 
@@ -788,6 +793,11 @@ const StepperForm = ({ data, id }) => {
           return updateRoomName(roomData);
         })
       );
+
+      const deepCopyOfInitialScopeData = JSON.parse(
+        JSON.stringify(initialScopeData)
+      );
+      setFixedScopeData(deepCopyOfInitialScopeData);
     }
 
     if (pushData?.data) {

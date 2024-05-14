@@ -59,7 +59,15 @@ const FinanceForm = ({
             handleChangeDropdown={(e) =>
               handleChangeDropdown(e, "Method of Deposit")
             }
-            options={["Check", "Square", "Synchrony", "Cash", "Zelle", "Wire"]}
+            options={[
+              "Check",
+              "Square",
+              "Synchrony",
+              "Cash",
+              "Zelle",
+              "Wire",
+              "None",
+            ]}
           />
         </Grid>
         <Grid item xs={12}>
