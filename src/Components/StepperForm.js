@@ -299,10 +299,14 @@ const StepperForm = ({ data, id }) => {
   React.useEffect(() => {
     setValue("Amount", data?.Amount);
     setValue("Deposit Taken", data?.["Deposit Taken"]);
-    setValue(
-      "Other Project Timing Notes",
-      data?.["Other Project Timing Notes"]
-    );
+
+    // handle special case for only this field to replace br tag with /n
+    const otherProjectTimingNotes = data?.["Other Project Timing Notes"] || "";
+    const replaceBrToNewLine = !!otherProjectTimingNotes
+      ? otherProjectTimingNotes.replace(/<br>/g, "\n")
+      : "";
+
+    setValue("Other Project Timing Notes", replaceBrToNewLine);
     setValue(
       "Special instructions for getting into home Notes",
       data?.["Special instructions for getting into home Notes"]
