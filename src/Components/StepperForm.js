@@ -149,7 +149,7 @@ const StepperForm = ({ data, id, fetchData }) => {
   const [formData, setFormData] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [changedRooms, setChangedRooms] = React.useState([]);
-  const [proposaId, setProposaId] = React.useState(null);
+  const [proposaId, setProposaId] = React.useState("");
 
   const staticStage = React.useMemo(() => {
     return data?.Stage;
@@ -574,9 +574,17 @@ const StepperForm = ({ data, id, fetchData }) => {
   };
 
   const openEmailModal = async (data) => {
-    setProposalModalOpen(true);
-    // setEmailModal(true);
+    if (proposals?.length > 0) {
+      setProposalModalOpen(true);
+    } else {
+      setEmailModal(true);
+    }
     setFormData(data);
+  };
+
+  const handleProposalModal = async (data) => {
+    setEmailModal(true);
+    setProposalModalOpen(false);
   };
 
   const onSubmit = async (emailVal, data) => {
@@ -1002,10 +1010,7 @@ const StepperForm = ({ data, id, fetchData }) => {
         handleClose={() => {
           setEmailModal(false);
         }}
-        onClick={() => {
-          setEmailModal(true);
-          setProposalModalOpen(false);
-        }}
+        onClick={handleProposalModal}
         onCancel={() => {
           setProposalModalOpen(false);
         }}
