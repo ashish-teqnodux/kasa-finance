@@ -46,7 +46,7 @@ const StepperIndexPage = () => {
       />
       {Object.keys(data || {}).length > 0 ? (
         <div className="App">
-          <StepperForm data={data} id={queryValue} />
+          <StepperForm data={data} id={queryValue} fetchData={fetchData} />
         </div>
       ) : (
         <MuiLinearProgress />

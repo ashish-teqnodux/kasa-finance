@@ -34,6 +34,7 @@ import FurnitureForm from "./Forms/FurnitureForm";
 import MuiCustomModal from "./UI/MuiCustomModal";
 import CustomerInfoForm from "./Forms/CustomerInfoForm";
 import { checkIfRoomIsChanged } from "../utils/Constants";
+import ProposalChooseModal from "./UI/ProposalChooseModal";
 
 const steps = [
   "Project Overview",
@@ -129,7 +130,7 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const StepperForm = ({ data, id }) => {
+const StepperForm = ({ data, id, fetchData }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const [date, setDate] = React.useState({});
@@ -144,12 +145,18 @@ const StepperForm = ({ data, id }) => {
   const [message, setMessage] = React.useState("");
   const [type, setType] = React.useState("");
   const [emailModal, setEmailModal] = React.useState(false);
+  const [proposalModalOpen, setProposalModalOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [changedRooms, setChangedRooms] = React.useState([]);
+  const [proposaId, setProposaId] = React.useState(null);
 
   const staticStage = React.useMemo(() => {
     return data?.Stage;
+  }, [data]);
+
+  const proposals = React.useMemo(() => {
+    return data?.proposals;
   }, [data]);
 
   const deepCopyOfResultingScope = JSON.parse(
@@ -567,7 +574,8 @@ const StepperForm = ({ data, id }) => {
   };
 
   const openEmailModal = async (data) => {
-    setEmailModal(true);
+    setProposalModalOpen(true);
+    // setEmailModal(true);
     setFormData(data);
   };
 
@@ -776,6 +784,13 @@ const StepperForm = ({ data, id }) => {
       "Other Payment Notes": data?.["Other Payment Notes"] || "",
     };
 
+    const selected_proposal = proposaId;
+    let unselected_proposals = proposals?.filter(
+      (pro) => pro?.id !== proposaId
+    );
+
+    unselected_proposals = unselected_proposals?.map((pro) => pro?.id) || [];
+
     let finalBody = {
       id,
       ...noteValues,
@@ -784,6 +799,8 @@ const StepperForm = ({ data, id }) => {
       ...formattedDropdownvalues,
       Resulting_Scope: initialScopeData,
       Staircases_Scope: initialStaircaseData,
+      selected_proposal,
+      unselected_proposals,
     };
 
     const pushData = await pushResultDatatoZoho(finalBody, id);
@@ -809,6 +826,7 @@ const StepperForm = ({ data, id }) => {
       setOpen(true);
       setMessage(message);
       setType(message === "success" ? "success" : "error");
+      await fetchData();
     }
     setIsLoading({ [emailVal]: false });
     setEmailModal(false);
@@ -979,6 +997,22 @@ const StepperForm = ({ data, id }) => {
           </React.Fragment>
         </div>
       </Box>
+      <ProposalChooseModal
+        open={proposalModalOpen}
+        handleClose={() => {
+          setEmailModal(false);
+        }}
+        onClick={() => {
+          setEmailModal(true);
+          setProposalModalOpen(false);
+        }}
+        onCancel={() => {
+          setProposalModalOpen(false);
+        }}
+        proposaId={proposaId}
+        setProposaId={setProposaId}
+        proposals={proposals || []}
+      />
       <MuiCustomModal
         open={emailModal}
         handleClose={() => {
