@@ -296,7 +296,7 @@ const StepperForm = ({ data, id, fetchData }) => {
 
   let timeZoneOffset = data?.["offset"];
 
-  const { register, errors, getValues, setValue, handleSubmit } =
+  const { register, errors, getValues, setValue, handleSubmit, control } =
     useReactHookForm({
       validationSchema: EventSchema,
       defaultValues: {},
@@ -304,8 +304,8 @@ const StepperForm = ({ data, id, fetchData }) => {
     });
 
   React.useEffect(() => {
-    setValue("Amount", data?.Amount);
-    setValue("Deposit Taken", data?.["Deposit Taken"]);
+    setValue("Amount", data?.Amount || null);
+    setValue("Deposit Taken", data?.["Deposit Taken"] || null);
 
     // handle special case for only this field to replace br tag with /n
     const otherProjectTimingNotes = data?.["Other Project Timing Notes"] || "";
@@ -579,6 +579,7 @@ const StepperForm = ({ data, id, fetchData }) => {
     } else {
       setEmailModal(true);
     }
+    console.log(data, "data");
     setFormData(data);
   };
 
@@ -895,6 +896,7 @@ const StepperForm = ({ data, id, fetchData }) => {
                     dropdownValue={dropdownValue}
                     getValues={getValues}
                     data={data}
+                    control={control}
                   />
                 )}
                 {activeStep === 1 && (
@@ -907,6 +909,7 @@ const StepperForm = ({ data, id, fetchData }) => {
                     dropdownValue={dropdownValue}
                     data={data}
                     getValues={getValues}
+                    control={control}
                   />
                 )}
                 {activeStep === 2 && (
@@ -921,6 +924,7 @@ const StepperForm = ({ data, id, fetchData }) => {
                     dropdownValue={dropdownValue}
                     getValues={getValues}
                     data={data}
+                    control={control}
                   />
                 )}
                 {activeStep === 3 && (
@@ -931,6 +935,7 @@ const StepperForm = ({ data, id, fetchData }) => {
                     dropdownValue={dropdownValue}
                     getValues={getValues}
                     data={data}
+                    control={control}
                   />
                 )}
                 {activeStep === 4 && (
@@ -950,6 +955,7 @@ const StepperForm = ({ data, id, fetchData }) => {
                     handleChangeStaricaseDropdown={
                       handleChangeStaricaseDropdown
                     }
+                    control={control}
                   />
                 )}
                 {activeStep === 5 && (

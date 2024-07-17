@@ -14,6 +14,7 @@ const FinanceForm = ({
   dropdownValue,
   data,
   getValues,
+  control,
 }) => {
   return (
     <Box
@@ -32,8 +33,9 @@ const FinanceForm = ({
             label="Amount"
             register={register}
             errors={errors}
-            value={data?.["Amount"]}
+            value={data?.["Amount"] || null}
             getValues={getValues}
+            control={control}
           />
         </Grid>
         <Grid item xs={12}>
@@ -44,8 +46,9 @@ const FinanceForm = ({
             label="Deposit Taken ($)"
             register={register}
             errors={errors}
-            value={data?.["Deposit Taken"]}
+            value={data?.["Deposit Taken"] || null}
             getValues={getValues}
+            control={control}
           />
         </Grid>
         <Grid item xs={12}>
@@ -108,6 +111,7 @@ const FinanceForm = ({
             errors={errors}
             value={data?.["Other Payment Notes"]}
             getValues={getValues}
+            control={control}
           />
         </Grid>
       </Grid>

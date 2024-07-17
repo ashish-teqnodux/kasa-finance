@@ -186,6 +186,7 @@ const ScopeForm = ({
   multiFieldValue,
   initialStaircaseData,
   staircaseClick,
+  control,
 }) => {
   let isInstall = false;
   let isRefinishing = false;
@@ -261,6 +262,7 @@ const ScopeForm = ({
                 style={isRefinishing ? gridItemStyle : { paddingLeft: 18 }}
               >
                 <Input
+                  control={control}
                   id="Other stain/finish notes"
                   name="Other stain/finish notes"
                   type="text"
@@ -375,6 +377,7 @@ const ScopeForm = ({
               </Grid>
               <Grid item xs={12}>
                 <Input
+                  control={control}
                   id="Installation Layout Notes"
                   name="Installation Layout Notes"
                   type="text"

@@ -10,6 +10,7 @@ const CustomerInfoForm = ({
   data,
   handleChangeDropdown,
   dropdownValue,
+  control,
 }) => {
   const secondColumnRef = React.useRef(null);
 
@@ -41,6 +42,7 @@ const CustomerInfoForm = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Customer Name"
                 name="Customer Name"
                 type="text"
@@ -53,6 +55,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={6}>
               <Input
+                control={control}
                 id="Unit"
                 name="Unit"
                 type="text"
@@ -65,6 +68,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={6}>
               <Input
+                control={control}
                 id="Street"
                 name="Street"
                 type="text"
@@ -77,6 +81,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={4}>
               <Input
+                control={control}
                 id="City"
                 name="City"
                 type="text"
@@ -89,6 +94,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={4}>
               <Input
+                control={control}
                 id="State"
                 name="State"
                 type="text"
@@ -101,6 +107,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={4}>
               <Input
+                control={control}
                 id="Zip Code"
                 name="Zip Code"
                 type="text"
@@ -113,6 +120,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={6}>
               <Input
+                control={control}
                 id="Mobile_Phone"
                 name="Mobile_Phone"
                 type="text"
@@ -125,6 +133,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={6}>
               <Input
+                control={control}
                 id="Other_Phone"
                 name="Other_Phone"
                 type="text"
@@ -137,6 +146,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Spouse name"
                 name="Spouse name"
                 type="text"
@@ -149,6 +159,7 @@ const CustomerInfoForm = ({
             </Grid>
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Spouse_s_phone_number"
                 name="Spouse_s_phone_number"
                 type="number"
@@ -212,6 +223,7 @@ const CustomerInfoForm = ({
                 </Grid>
                 <Grid item xs={12}>
                   <Input
+                    control={control}
                     id="Floor level"
                     name="Floor level"
                     type="text"
@@ -315,6 +327,7 @@ const CustomerInfoForm = ({
               "Other" && (
               <Grid item xs={12}>
                 <Input
+                  control={control}
                   id="Other Reason Customer Is Doing Project"
                   name="Other Reason Customer Is Doing Project"
                   type="text"
@@ -328,6 +341,7 @@ const CustomerInfoForm = ({
             )}
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Most Important thing to customer about project"
                 name="Most Important thing to customer about project"
                 type="text"
@@ -364,6 +378,7 @@ const CustomerInfoForm = ({
             ] === "Yes" && (
               <Grid item xs={12}>
                 <Input
+                  control={control}
                   id="Complications to be discussed"
                   name="Complications to be discussed"
                   type="text"

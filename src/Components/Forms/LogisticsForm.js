@@ -32,6 +32,7 @@ const LogisticsForm = ({
   dropdownValue,
   getValues,
   data,
+  control,
 }) => {
   return (
     <Box
@@ -105,6 +106,7 @@ const LogisticsForm = ({
             ] === "Yes" && (
               <Grid item xs={12}>
                 <Input
+                  control={control}
                   id="Special instructions for getting into home Notes"
                   name="Special instructions for getting into home Notes"
                   type="text"

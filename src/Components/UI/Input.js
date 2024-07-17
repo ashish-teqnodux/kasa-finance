@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useController } from "react-hook-form";
 
 const StyledInput = styled(TextField)(() => ({
   "&.MuiTextField-root": {
@@ -46,22 +47,41 @@ const Input = (props) => {
     maxRows = 4,
     minRows = 4,
     getValues,
+    control,
   } = props;
 
   const [focus, setFocus] = useState(false);
 
+  const { field } = useController({
+    name: id,
+    control,
+    defaultValue: value,
+  });
+
+  const handleChange = (e) => {
+    let newValue = e.target.value;
+
+    if (type === "number" && newValue.startsWith(".")) {
+      if (newValue.length > 1) {
+        newValue = "0" + newValue;
+      }
+    }
+
+    field.onChange(newValue);
+  };
+
   useEffect(() => {
-    if (!!value) {
+    if (field.value) {
       setFocus(true);
     }
-  }, [value, register]);
+  }, [field.value]);
 
   const handleFocus = () => {
     setFocus(true);
   };
 
   const handleBlur = async (e) => {
-    if (getValues(id) == 0 || getValues(id) == "") {
+    if (field.value == 0 || field.value == "" || field.value == null) {
       setFocus(false);
     }
   };
@@ -72,13 +92,15 @@ const Input = (props) => {
       variant={variant}
       id={id}
       name={name}
-      {...register(id)}
+      // {...register(id)}
       type={type}
       onFocus={handleFocus}
+      onChange={handleChange}
       onBlur={handleBlur}
       autoComplete="off"
       disabled={disabled}
-      defaultValue={value}
+      // defaultValue={value}
+      value={field.value}
       InputLabelProps={{ shrink: Boolean(getValues(id)) || focus }}
       inputProps={{
         step: "any",

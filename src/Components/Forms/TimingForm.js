@@ -36,6 +36,7 @@ const TimingForm = ({
   dropdownValue,
   getValues,
   data,
+  control,
 }) => {
   return (
     <Box
@@ -154,6 +155,7 @@ const TimingForm = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Customer Plan For The Project Notes"
                 name="Customer Plan For The Project Notes"
                 type="text"
@@ -175,6 +177,7 @@ const TimingForm = ({
             </Grid>
             <Grid item xs={12}>
               <Input
+                control={control}
                 id="Other Project Timing Notes"
                 name="Other Project Timing Notes"
                 type="text"
