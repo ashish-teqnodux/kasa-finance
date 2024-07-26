@@ -348,6 +348,7 @@ const StepperForm = ({ data, id, fetchData }) => {
     setValue("Mobile_Phone", data?.Mobile_Phone);
     setValue("Other_Phone", data?.Other_Phone);
     setValue("Other Payment Notes", data?.["Other Payment Notes"]);
+    setValue("Other Notes", data?.["Other Notes"]);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -791,6 +792,7 @@ const StepperForm = ({ data, id, fetchData }) => {
       Mobile_Phone: data?.Mobile_Phone || "",
       Other_Phone: data?.Other_Phone || "",
       "Other Payment Notes": data?.["Other Payment Notes"] || "",
+      "Other Notes": data?.["Other Notes"] || "",
     };
 
     const selected_proposal = proposaId;

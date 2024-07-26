@@ -66,8 +66,10 @@ const DropdownField = ({
           },
         }}
       >
-        {options?.map((option) => (
-          <StyledMenuItem value={option}>{option}</StyledMenuItem>
+        {options?.map((option, idx) => (
+          <StyledMenuItem key={option + idx} value={option}>
+            {option}
+          </StyledMenuItem>
         ))}
       </StyledSelect>
     </StyledFormControl>

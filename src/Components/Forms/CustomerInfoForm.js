@@ -390,6 +390,19 @@ const CustomerInfoForm = ({
                 />
               </Grid>
             )}
+            <Grid item xs={12}>
+              <Input
+                control={control}
+                id="Other Notes"
+                name="Other Notes"
+                type="text"
+                label="Other Notes"
+                register={register}
+                errors={errors}
+                getValues={getValues}
+                value={data?.["Other Notes"] || ""}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
