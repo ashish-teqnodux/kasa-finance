@@ -8,3 +8,7 @@ export const checkIfRoomIsChanged = (prevRoom, newRoom) => {
   const roomsAreEqual = isEqual(prevRoom, newRoom);
   return !roomsAreEqual;
 };
+
+export const replaceHtmlEntities = (str = "") => {
+  return str.replace(/<br>/g, "\n");
+};

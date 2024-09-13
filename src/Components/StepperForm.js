@@ -33,7 +33,7 @@ import MuiSnackbar from "./UI/MuiSnackbar";
 import FurnitureForm from "./Forms/FurnitureForm";
 import MuiCustomModal from "./UI/MuiCustomModal";
 import CustomerInfoForm from "./Forms/CustomerInfoForm";
-import { checkIfRoomIsChanged } from "../utils/Constants";
+import { checkIfRoomIsChanged, replaceHtmlEntities } from "../utils/Constants";
 import ProposalChooseModal from "./UI/ProposalChooseModal";
 
 const steps = [
@@ -309,8 +309,14 @@ const StepperForm = ({ data, id, fetchData }) => {
 
     // handle special case for only this field to replace br tag with /n
     const otherProjectTimingNotes = data?.["Other Project Timing Notes"] || "";
+    const furnitureNotes = data?.["Furniture Plan Notes"] || "";
+
     const replaceBrToNewLine = !!otherProjectTimingNotes
-      ? otherProjectTimingNotes.replace(/<br>/g, "\n")
+      ? replaceHtmlEntities(otherProjectTimingNotes)
+      : "";
+
+    const replaceFurnitureNotes = !!furnitureNotes
+      ? replaceHtmlEntities(furnitureNotes)
       : "";
 
     setValue("Other Project Timing Notes", replaceBrToNewLine);
@@ -349,6 +355,7 @@ const StepperForm = ({ data, id, fetchData }) => {
     setValue("Other_Phone", data?.Other_Phone);
     setValue("Other Payment Notes", data?.["Other Payment Notes"]);
     setValue("Other Notes", data?.["Other Notes"]);
+    setValue("Furniture Plan Notes", replaceFurnitureNotes);
 
     const parsedDate = momentTz.tz(
       data?.["Deposit Taken Date"],
@@ -793,6 +800,7 @@ const StepperForm = ({ data, id, fetchData }) => {
       Other_Phone: data?.Other_Phone || "",
       "Other Payment Notes": data?.["Other Payment Notes"] || "",
       "Other Notes": data?.["Other Notes"] || "",
+      "Furniture Plan Notes": data?.["Furniture Plan Notes"] || "",
     };
 
     const selected_proposal = proposaId;
@@ -968,6 +976,9 @@ const StepperForm = ({ data, id, fetchData }) => {
                     dropdownValue={dropdownValue}
                     handleChangeMultiSelect={handleChangeMultiSelect}
                     multiFieldValue={multiFieldValue}
+                    data={data}
+                    control={control}
+                    getValues={getValues}
                   />
                 )}
               </div>

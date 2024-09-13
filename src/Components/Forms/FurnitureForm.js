@@ -3,6 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import DropdownField from "../UI/DropdownField";
 import MuiAutoComplete from "../UI/MuiAutoComplete";
 import { Constants } from "../../utils/Constants";
+import Input from "../UI/Input";
 
 const appliancesOptions = [
   { title: "Refrigerator", value: "Refrigerator" },
@@ -59,6 +60,9 @@ const FurnitureForm = ({
   dropdownValue,
   handleChangeMultiSelect,
   multiFieldValue,
+  control,
+  getValues,
+  data,
 }) => {
   return (
     <Box
@@ -133,6 +137,20 @@ const FurnitureForm = ({
             />
           </Grid>
         )}
+        <Grid item xs={12}>
+          <Input
+            control={control}
+            id="Furniture Plan Notes"
+            name="Furniture Plan Notes"
+            type="text"
+            label="Furniture Plan Notes"
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            value={data?.["Furniture Plan Notes"]}
+            multiline={true}
+          />
+        </Grid>
       </Grid>
     </Box>
   );
